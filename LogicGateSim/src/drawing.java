@@ -1,3 +1,18 @@
+/*
+ * 
+ * Author: 			Shoaib Waseem
+ * Student Code:	w13013878
+ * University:		Northumbria University
+ * Version:			Version 1
+ * Date:			19th March 2017 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+
 	/***************************************************************************************/
 	/**************************************IMPORT MODULES***********************************/
 	/***************************************************************************************/
@@ -20,7 +35,11 @@ public class drawing extends JFrame implements ActionListener
 
     MyCanvas drawarea;
     
-    Color background = new Color(128,128,127);	// colour 'hack'
+    Color background = new Color(128,128,127);
+    
+    
+    
+    //Drawing Classes through buttons
     
     drawingOR ORGate; 		// OR gate class
     drawingAND ANDGate; 	// AND gate class
@@ -46,7 +65,7 @@ public class drawing extends JFrame implements ActionListener
 	Color currentColour = new Color(0,0,0); // black line for drawing
 	
 	//used for the combo box, 
-	String[] numberOfGates  = { "Select No. of Gates","1","3","9" };
+	String[] numberOfGates  = { "Select No. of Gates","1","3","7" };
 	
 	int[] threeGatesList = new int[3];
 	
@@ -64,9 +83,6 @@ public class drawing extends JFrame implements ActionListener
 	Gates NAND = new Gates(5);
 	
 	
-
-	ArrayList<Gates> threeGates = new ArrayList<Gates>();
-	
 	
 
     public drawing()
@@ -77,7 +93,7 @@ public class drawing extends JFrame implements ActionListener
      
     setTitle("Logic Gates"); 
     
-    
+    //add gates to arraylist GatesList
     GatesList.add(XOR);
     GatesList.add(OR);
     GatesList.add(NOR);
@@ -104,15 +120,17 @@ public class drawing extends JFrame implements ActionListener
 	randomTest = new JButton("Random");
 	confirmNumberOfGates = new JButton("Confirm");
 	
+	//used to determine how complex the logic gate system will be
 	cbx_numberOfGates = new JComboBox(numberOfGates);
-	
 	palette.add(cbx_numberOfGates);
 	cbx_numberOfGates.setSelectedIndex(0);
 	cbx_numberOfGates.addActionListener(this);
 	
+	// Assign button to confirm number of logic gates
 	palette.add(confirmNumberOfGates);
 	confirmNumberOfGates.addActionListener(this);
 	
+	// Assign button to draw a single logic gate - for testing
 	palette.add(orGate);
 	orGate.addActionListener(this);
 	palette.add(andGate);
@@ -125,11 +143,11 @@ public class drawing extends JFrame implements ActionListener
 	nandGate.addActionListener(this);
 	palette.add(randomTest);
 	randomTest.addActionListener(this);
-	getContentPane().add(palette,"North"); // Gate buttons on top
+	
+	// Gate buttons on top
+	getContentPane().add(palette,"North"); 
 
-	
-	
-	// Drawing area
+	// Draw area
 	drawarea = new MyCanvas(); // MyCanvas class
 	getContentPane().add(drawarea,"Center"); // Draw stuff in the centre
 	setVisible(true); // visible true for all elements
@@ -138,61 +156,24 @@ public class drawing extends JFrame implements ActionListener
 
     public void actionPerformed(ActionEvent ev)
     {
-		if ("OR Gate".equals(ev.getActionCommand())) // if button with "OR Gate" text
-		{ 
-			gate = 1; // assign it a int value
-			repaint(); // so gates won't overlap
-		}
-		else if ("AND Gate".equals(ev.getActionCommand()))
+    	
+		if(("Confirm".equals(ev.getActionCommand())))
 		{
-			gate = 2;
-			repaint();
-		}
-		else if ("XOR Gate".equals(ev.getActionCommand())){
-			gate = 3;
-			repaint();
-		}
-		else if ("NOR Gate".equals(ev.getActionCommand())){
-			gate = 4;
-			repaint();
-		}
-		else if ("NAND Gate".equals(ev.getActionCommand())){
-			gate = 5;
-			repaint();
-		}
-		else if ("NAND Gate".equals(ev.getActionCommand())){
-			gate = 5;
-			repaint();
-		}
-		else if ("Random".equals(ev.getActionCommand())){
-			gate = randomGate.nextInt(5-1 + 1) + 1;
-			repaint();
-		}
-		else if(("Confirm".equals(ev.getActionCommand()))){
 			cbx_index = cbx_numberOfGates.getSelectedIndex();
-			repaint();
+			repaint(); //clear canvas
+						
+			//Random Gate Generation	
+			if(cbx_index != 0){
+				//if no gate number is chosen
+				repaint();
 			
-			if(cbx_index == 0){
+			} else {
 				{JOptionPane.showMessageDialog(null, "Please select a logic gate first");}
 			}
-			else if (cbx_index == 1){
-				//1 gate goes here
-			}
-			else if (cbx_index == 2){
-				//3 gates
-				for(int i = 0; i < 3; i++){
-					repaint();
-				}
-				
-			}
-			else if (cbx_index == 3){
-				//7 gates
-			}
-							
-					
-			}
-				
+
 		}
+				
+    }
 				
 			
 			
@@ -236,8 +217,43 @@ public class drawing extends JFrame implements ActionListener
 			index = randomGate.nextInt(GatesList.size());
 			GatesList.get(randomGate.nextInt(GatesList.size())).getGate(gfx, translationX, translationY);
 		}
+		
+		public void updateSingleGate(Graphics gfx) {
+			translationX = translationX + 270;
+			translationY = translationY + 75;
+			updateGates(gfx);
+		}
 			
+		
+		public void updateFinalGate(Graphics gfx){
 			
+			translationX = translationX + 150;
+			translationY = translationY - 150;
+			updateGates(gfx);
+		}
+		
+		public void updateTwoGates(Graphics gfx) {
+			
+			for (int i = 0; i < 2; i++)
+			{
+				updateGates(gfx);
+				translationY = translationY + 100;
+			}
+		}
+		
+		public void updateFourGates(Graphics gfx){
+			
+			for (int i = 0; i < 4; i++)
+			{
+				updateGates(gfx);
+				translationY = translationY + 100;
+			}
+		
+			translationX = translationX + 150;
+			translationY = translationY - (100 * 3);
+		}
+		
+		
 
 		
 		
@@ -247,106 +263,27 @@ public class drawing extends JFrame implements ActionListener
 		translationX = 0;
 		translationY = 0;
 		
+		if(cbx_index == 1){
+			
+			updateSingleGate(gfx);
+		}
+		
 		if(cbx_index == 2) {
 			
-		
-			for (int i = 0; i < 2; i++)
-			{
-				updateGates(gfx);
-				translationY = translationY + 100;
+			updateTwoGates(gfx);
+			updateFinalGate(gfx);
+				
 			}
 		
-			translationX = translationX + 150;
-			translationY = translationY - 150;
-		
+		if(cbx_index == 3) {
+			
+			updateFourGates(gfx);
+			updateTwoGates(gfx);
+			updateFinalGate(gfx);
+			
 			}
 		}
-		/*public void paint(Graphics gfx) 
-			{	
-			gfx.setColor(currentColour);
-			translationX = 0;
-			translationY = 0;
-			
-			
-			for (Gates g : GatesList) {
-			
-			if(cbx_index == 1) {	
-			for (int i = 0; i < 2; i++){
-								
-				if (threeGatesList[i] == 1) // If user selected or gate...
-				{ 
-					GatesList.get(threeGatesList[i]).getGate(gfx, translationX, translationY);
-
-					
-				}
-				else if (threeGatesList[i] == 2) // If user selected and gate
-				{
-					GatesList.get(threeGatesList[i]).getGate(gfx, translationX, translationY);
-
-
-				} 
-				else if (threeGatesList[i] == 3) // If user selected XOR gate
-				{
-					GatesList.get(threeGatesList[i]).getGate(gfx, translationX, translationY);
-					
-			
-				} 
-				else if (threeGatesList[i] == 4) // If user selected NOR gate
-				{
-					GatesList.get(threeGatesList[i]).getGate(gfx, translationX, translationY);
-					
-
-				}
-				else if (threeGatesList[i] == 5) // If user selected NAND gate
-				{
-					GatesList.get(threeGatesList[i]).getGate(gfx, translationX, translationY);
-					
-
-				} 
-				
-				translationY = translationY + 100;
-							
-			}
-			translationX = translationX + 150;
-			translationY = translationY - 150;
-			
-			if (threeGatesList[2] == 1) // If user selected or gate...
-			{ 
-				GatesList.get(threeGatesList[2]).getGate(gfx, translationX, translationY);
-				
-			}
-			else if (threeGatesList[2] == 2) // If user selected and gate
-			{
-				GatesList.get(threeGatesList[2]).getGate(gfx, translationX, translationY);
-				
-
-			} 
-			else if (threeGatesList[2] == 3) // If user selected XOR gate
-			{
-				GatesList.get(threeGatesList[2]).getGate(gfx, translationX, translationY);
-				
 		
-			} 
-			else if (threeGatesList[2] == 4) // If user selected NOR gate
-			{
-				GatesList.get(threeGatesList[2]).getGate(gfx, translationX, translationY);
-				
-
-			}
-			else if (threeGatesList[2] == 5) // If user selected NAND gate
-			{
-				GatesList.get(threeGatesList[2]).getGate(gfx, translationX, translationY);
-				
-
-			} 
-			
-			}
-			
-			
-			}
-		
-	}
-		*/
 		
 		public void update(Graphics gfx)
 		{
