@@ -1,10 +1,10 @@
 /*
- * 
+ * Title:			Logic Gate Simulator
  * Author: 			Shoaib Waseem
  * Student Code:	w13013878
  * University:		Northumbria University
- * Version:			Version 1
- * Date:			19th March 2017 
+ * Version:			Version 2
+ * Date:			20th March 2017 
  * 
  * 
  * 
@@ -75,6 +75,7 @@ public class drawing extends JFrame implements ActionListener
 	//rng for random gate
 	Random randomGate = new Random();
     
+	//List of printable Gates
 	ArrayList<Gates> GatesList = new ArrayList<Gates>();
 	Gates XOR = new Gates(1);
 	Gates OR = new Gates(2);
@@ -82,7 +83,8 @@ public class drawing extends JFrame implements ActionListener
 	Gates AND = new Gates(4);
 	Gates NAND = new Gates(5);
 	
-	
+	//List of Printed Gates
+	ArrayList<Gates> printedGates = new ArrayList<Gates>();
 	
 
     public drawing()
@@ -94,11 +96,14 @@ public class drawing extends JFrame implements ActionListener
     setTitle("Logic Gates"); 
     
     //add gates to arraylist GatesList
-    GatesList.add(XOR);
-    GatesList.add(OR);
-    GatesList.add(NOR);
-    GatesList.add(AND);
-    GatesList.add(NAND);
+    if(GatesList.isEmpty()){
+        GatesList.add(XOR);
+        GatesList.add(OR);
+        GatesList.add(NOR);
+        GatesList.add(AND);
+        GatesList.add(NAND);
+    }
+
 
     
     // Instance of classes
@@ -160,11 +165,11 @@ public class drawing extends JFrame implements ActionListener
 		if(("Confirm".equals(ev.getActionCommand())))
 		{
 			cbx_index = cbx_numberOfGates.getSelectedIndex();
-			repaint(); //clear canvas
+
 						
 			//Random Gate Generation	
 			if(cbx_index != 0){
-				//if no gate number is chosen
+				//if gate number is chosen
 				repaint();
 			
 			} else {
@@ -175,15 +180,6 @@ public class drawing extends JFrame implements ActionListener
 				
     }
 				
-			
-			
-
-			
-		
-		
-    
-
-		
     
     
 	/***************************************************************************************/
@@ -204,7 +200,7 @@ public class drawing extends JFrame implements ActionListener
 		public MyCanvas()
 		{
 			addMouseListener(this); 
-			addMouseMotionListener( this);
+			//addMouseMotionListener( this);
 
 			setVisible(true); // Better to set visible than to not
 		}
@@ -215,7 +211,8 @@ public class drawing extends JFrame implements ActionListener
 		{	
 
 			index = randomGate.nextInt(GatesList.size());
-			GatesList.get(randomGate.nextInt(GatesList.size())).getGate(gfx, translationX, translationY);
+			printedGates.add(GatesList.get(index));
+			GatesList.get(index).getGate(gfx, translationX, translationY);
 		}
 		
 		public void updateSingleGate(Graphics gfx) {
@@ -253,7 +250,12 @@ public class drawing extends JFrame implements ActionListener
 			translationY = translationY - (100 * 3);
 		}
 		
-		
+		//for testing array list printedGates
+		public void getAll(){
+			for(Gates printed : printedGates) {
+				System.out.println(printed);
+			}
+		}
 
 		
 		
@@ -262,6 +264,7 @@ public class drawing extends JFrame implements ActionListener
 		gfx.setColor(currentColour);
 		translationX = 0;
 		translationY = 0;
+		printedGates.clear();
 		
 		if(cbx_index == 1){
 			
@@ -282,6 +285,7 @@ public class drawing extends JFrame implements ActionListener
 			updateFinalGate(gfx);
 			
 			}
+		getAll();
 		}
 		
 		
@@ -290,31 +294,10 @@ public class drawing extends JFrame implements ActionListener
 			super.paint(gfx);
 		}
 				
-		// Loads of mouse stuff, not all used, but needed
-		public void mouseReleased(MouseEvent e)
-		{
-
-			repaint();
-		}
-
-		public void mouseDragged(MouseEvent e)
-		{
-
-			repaint();
-		}
-
-		public void mousePressed(MouseEvent e)
-		{
-			if (gate == 0)
-			{
-				{JOptionPane.showMessageDialog(null, "Please select a logic gate first");}
-			}
-			
-
-			repaint();
-		}
-		
 		// All of this needs to be enabled
+		public void mouseReleased(MouseEvent e)	{}
+		public void mouseDragged(MouseEvent e)	{}
+		public void mousePressed(MouseEvent e)	{}
 		public void mouseClicked(MouseEvent e)	{}
 		public void mouseEntered(MouseEvent e)	{}
 		public void mouseExited(MouseEvent e)	{}
