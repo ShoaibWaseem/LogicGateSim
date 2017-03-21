@@ -84,7 +84,7 @@ public class drawing extends JFrame implements ActionListener
 	Gates NAND = new Gates(5);
 	
 	//List of Printed Gates
-	ArrayList<Gates> printedGates = new ArrayList<Gates>();
+	ArrayList<String> printedGates = new ArrayList<String>();
 	
 
     public drawing()
@@ -170,6 +170,7 @@ public class drawing extends JFrame implements ActionListener
 			//Random Gate Generation	
 			if(cbx_index != 0){
 				//if gate number is chosen
+				printedGates.clear();
 				repaint();
 			
 			} else {
@@ -210,9 +211,18 @@ public class drawing extends JFrame implements ActionListener
 		public void updateGates(Graphics gfx) 
 		{	
 
-			index = randomGate.nextInt(GatesList.size());
-			printedGates.add(GatesList.get(index));
+			index = randomGate.nextInt((GatesList.size() + 1) - 1);
+			System.out.println(index);
 			GatesList.get(index).getGate(gfx, translationX, translationY);
+			addPrintedGate();
+		}
+		
+		public void addPrintedGate() {
+			if(index == 0) 		{	printedGates.add("XOR");	}
+			else if(index == 1)	{	printedGates.add("OR");		}
+			else if(index == 2)	{	printedGates.add("NOR");	}
+			else if(index == 3)	{	printedGates.add("AND");	}
+			else if(index == 4)	{	printedGates.add("NAND");	}
 		}
 		
 		public void updateSingleGate(Graphics gfx) {
@@ -229,7 +239,7 @@ public class drawing extends JFrame implements ActionListener
 			updateGates(gfx);
 		}
 		
-		public void updateTwoGates(Graphics gfx) {
+		public void updateTwoGates(Graphics gfx) {	
 			
 			for (int i = 0; i < 2; i++)
 			{
@@ -252,7 +262,7 @@ public class drawing extends JFrame implements ActionListener
 		
 		//for testing array list printedGates
 		public void getAll(){
-			for(Gates printed : printedGates) {
+			for(String printed : printedGates) {
 				System.out.println(printed);
 			}
 		}
@@ -271,14 +281,14 @@ public class drawing extends JFrame implements ActionListener
 			updateSingleGate(gfx);
 		}
 		
-		if(cbx_index == 2) {
+		else if(cbx_index == 2) {
 			
 			updateTwoGates(gfx);
 			updateFinalGate(gfx);
 				
 			}
 		
-		if(cbx_index == 3) {
+		else if(cbx_index == 3) {
 			
 			updateFourGates(gfx);
 			updateTwoGates(gfx);
