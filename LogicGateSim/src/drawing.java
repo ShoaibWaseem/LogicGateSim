@@ -29,11 +29,13 @@ public class drawing extends JFrame implements ActionListener
 	/***************************************************************************************/
 	/**************************************DEFINITIONS**************************************/
 	/***************************************************************************************/
-	JPanel palette,tools;
+	JPanel palette,tools, paletteTT;
     JButton orGate, andGate, xorGate, norGate, nandGate, confirmNumberOfGates, randomTest;
-    
+    JTable truthTable;
+    JScrollPane scrollPane;
 
     MyCanvas drawarea;
+    MyCanvas truthtablearea;
     
     Color background = new Color(128,128,127);
     
@@ -86,13 +88,38 @@ public class drawing extends JFrame implements ActionListener
 	//List of Printed Gates
 	ArrayList<String> printedGates = new ArrayList<String>();
 	
+	//Column Names
+	String[] columnHeadings = {	"Gate", 
+								"Input A",
+								"Input B",
+								"Output"};
+	
+	//3 Gates Array
+	String[][] threeGatesArray = {
+			{"", "A", "B", "E"},
+			{"", "C", "D", "F"},
+			{"", "E", "F", "G"}
+	};
+	
+	//7 Gates Array
+	String[][] sevenGatesArray = {
+			{"", "A", "B", "I"},
+			{"", "C", "D", "J"},
+			{"", "E", "F", "K"},
+			{"", "G", "H", "L"},
+			{"", "I", "J", "M"},
+			{"", "K", "L", "N"},
+			{"", "M", "N", "O"}
+	};
+	
 
     public drawing()
     {
 	setSize(canvasSizeX,canvasSizeY); 
 	palette = new JPanel(); // Watch where this gets placed to
 	palette.setLayout(new GridLayout(2,3,5,5)); // grid layout
-     
+    
+	
     setTitle("Logic Gates"); 
     
     //add gates to arraylist GatesList
@@ -125,6 +152,9 @@ public class drawing extends JFrame implements ActionListener
 	randomTest = new JButton("Random");
 	confirmNumberOfGates = new JButton("Confirm");
 	
+	//Truth Tables
+	truthTable = new JTable(sevenGatesArray, columnHeadings);
+	
 	//used to determine how complex the logic gate system will be
 	cbx_numberOfGates = new JComboBox(numberOfGates);
 	palette.add(cbx_numberOfGates);
@@ -156,8 +186,34 @@ public class drawing extends JFrame implements ActionListener
 	drawarea = new MyCanvas(); // MyCanvas class
 	getContentPane().add(drawarea,"Center"); // Draw stuff in the centre
 	setVisible(true); // visible true for all elements
+	
+	drawTruthTable();
+	
 	} 
-	       
+	
+    
+    public void drawTruthTable(){
+    	
+    	setSize(canvasSizeX,canvasSizeY); 
+    	paletteTT = new JPanel(); // Watch where this gets placed to
+    	paletteTT.setLayout(new GridLayout(2,3,5,5)); // grid layout
+    	
+    	
+    	//Draw truth table
+    	truthtablearea = new MyCanvas();
+    	getContentPane().add(truthtablearea, "Center");
+    	setVisible(true);
+    	
+    	//scroll pane
+    	scrollPane = new JScrollPane(truthTable);
+    	truthTable.setFillsViewportHeight(true);
+    	
+    	paletteTT.setLayout(new BorderLayout());
+    	paletteTT.add(truthTable.getTableHeader(), BorderLayout.PAGE_START);
+    	paletteTT.add(truthTable, BorderLayout.CENTER);
+    	
+    	
+    }
 
     public void actionPerformed(ActionEvent ev)
     {
