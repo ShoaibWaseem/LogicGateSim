@@ -23,6 +23,7 @@ public class AI {
 	
 	boolean inputA;
 	boolean inputB;
+	boolean output;
 	String Gate = "";
 	
 
@@ -83,11 +84,12 @@ public class AI {
 		return output;
 	}
 	
-	public void main(String[] args, boolean getinputA, boolean getinputB, String getGate) {
+	public boolean main(String[] args, boolean getinputA, boolean getinputB, String getGate) {
 		AI ai = new AI(getinputA, getinputB, getGate); //to redo
+		return output = gateOutput(getinputA, getinputB, getGate);
 		
 		//store inputs locally
-		inputA = getinputA;
+		/*inputA = getinputA;
 		inputB = getinputB;
 		Gate = getGate;
 		
@@ -137,7 +139,7 @@ public class AI {
 					row = 10;
 				}
 			}
-		}
+		}*/
 	}		
 }
 	

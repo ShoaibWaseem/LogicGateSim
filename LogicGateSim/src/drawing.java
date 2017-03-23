@@ -112,6 +112,7 @@ public class drawing extends JFrame implements ActionListener
 			{"", "M", "N", "O"}
 	};
 	
+	boolean output;
 
     public drawing()
     {
@@ -187,12 +188,12 @@ public class drawing extends JFrame implements ActionListener
 	getContentPane().add(drawarea,"Center"); // Draw stuff in the centre
 	setVisible(true); // visible true for all elements
 	
-	drawTruthTable();
+	//drawTruthTable();
 	
 	} 
 	
     
-    public void drawTruthTable(){
+   /* public void drawTruthTable(){
     	
     	setSize(canvasSizeX,canvasSizeY); 
     	paletteTT = new JPanel(); // Watch where this gets placed to
@@ -214,7 +215,7 @@ public class drawing extends JFrame implements ActionListener
     	
     	
     }
-
+*/
     public void actionPerformed(ActionEvent ev)
     {
     	
@@ -236,7 +237,7 @@ public class drawing extends JFrame implements ActionListener
 		}
 				
     }
-				
+
     
     
 	/***************************************************************************************/
