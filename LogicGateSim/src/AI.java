@@ -32,6 +32,7 @@ public class AI {
 		gateOutput(getinputA, getinputB, getGate);
 	}
 	
+<<<<<<< HEAD
 	public boolean gateOutput(boolean getinputA, boolean getinputB, String getGate) {
 		inputA = getinputA;
 		inputB = getinputB;
@@ -78,6 +79,54 @@ public class AI {
 			for(row = 7; row < 10; row = row++){
 				if ((logicGates[row][column] == inputA) && (logicGates[row][column + 1] == inputB)){
 					output = true;
+=======
+	public boolean gateOutput( boolean getinputA, boolean getinputB, String getGate) {
+		inputA = getinputA;
+		inputB = getinputB;
+		Gate = getGate;
+		
+		int row;
+		int column = 0;
+		
+		//output set to false less otherwise
+		boolean output = false;
+		
+		if(Gate == "XOR"){
+			for(row = 0; row < 2; row = row++){
+				if (logicGates[row][column] == inputA && logicGates[row][column + 1] == inputB){
+					return output = true;
+				}
+			}
+		}
+		
+		if (Gate == "OR"){
+			for(row = 2; row < 5; row = row++){
+				if (logicGates[row][column] == inputA && logicGates[row][column + 1] == inputB){
+					return output = true;
+				}
+			}
+		}
+		
+		if (Gate == "NOR"){
+			row = 5;
+			if (logicGates[row][column] == inputA && logicGates[row][column + 1] == inputB){
+				return output = true;
+			}
+		}
+		
+		
+		if (Gate == "AND"){
+			row = 6;
+			if (logicGates[row][column] == inputA && logicGates[row][column + 1] == inputB){
+				return output = true;
+			}
+		}
+		
+		if (Gate == "NAND"){
+			for(row = 7; row < 10; row = row++){
+				if (logicGates[row][column] == inputA && logicGates[row][column + 1] == inputB){
+					return output = true;
+>>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 				}
 			}
 		}
