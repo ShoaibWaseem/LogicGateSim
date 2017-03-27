@@ -14,6 +14,7 @@
 
 /***************************************************************************************/
 /**************************************IMPORT MODULES***********************************/
+
 /***************************************************************************************/
 import java.awt.*;
 import java.awt.event.*;
@@ -27,8 +28,7 @@ public class drawing extends JFrame implements ActionListener {
 	/************************************** DEFINITIONS **************************************/
 	/***************************************************************************************/
 	JPanel palette, tools, paletteTT;
-	JButton orGate, andGate, xorGate, norGate, nandGate, confirmNumberOfGates,
-			randomTest, checkAnswers;
+	JButton orGate, andGate, xorGate, norGate, nandGate, confirmNumberOfGates, randomTest, checkAnswers;
 	JTable truthTable;
 	JScrollPane scrollPane;
 
@@ -93,44 +93,34 @@ public class drawing extends JFrame implements ActionListener {
 	// 3 Gates Array
 	String[][] GatesArrayS = {
 			// A B C D E F G
-			{ "0", "0", "0", "0", "", "", "" },
-			{ "0", "0", "0", "1", "", "", "" },
-			{ "0", "0", "1", "0", "", "", "" },
-			{ "0", "0", "1", "1", "", "", "" },
-			{ "0", "1", "0", "0", "", "", "" },
-			{ "0", "1", "0", "1", "", "", "" },
-			{ "0", "1", "1", "0", "", "", "" },
-			{ "0", "1", "1", "1", "", "", "" },
-			{ "1", "0", "0", "0", "", "", "" },
-			{ "1", "0", "0", "1", "", "", "" },
-			{ "1", "0", "1", "0", "", "", "" },
-			{ "1", "0", "1", "1", "", "", "" },
-			{ "1", "1", "0", "0", "", "", "" },
-			{ "1", "1", "0", "1", "", "", "" },
-			{ "1", "1", "1", "0", "", "", "" },
+			{ "0", "0", "0", "0", "", "", "" }, { "0", "0", "0", "1", "", "", "" }, { "0", "0", "1", "0", "", "", "" },
+			{ "0", "0", "1", "1", "", "", "" }, { "0", "1", "0", "0", "", "", "" }, { "0", "1", "0", "1", "", "", "" },
+			{ "0", "1", "1", "0", "", "", "" }, { "0", "1", "1", "1", "", "", "" }, { "1", "0", "0", "0", "", "", "" },
+			{ "1", "0", "0", "1", "", "", "" }, { "1", "0", "1", "0", "", "", "" }, { "1", "0", "1", "1", "", "", "" },
+			{ "1", "1", "0", "0", "", "", "" }, { "1", "1", "0", "1", "", "", "" }, { "1", "1", "1", "0", "", "", "" },
 			{ "1", "1", "1", "1", "", "", "" }, };
 
-	Boolean[][] GatesArray = {
-			{ false, false, false, false, false, false, false },
-			{ false, false, false, true, false, false, false },
-			{ false, false, true, false, false, false, false },
-			{ false, false, true, true, false, false, false },
-			{ false, true, false, false, false, false, false },
-			{ false, true, false, true, false, false, false },
-			{ false, true, true, false, false, false, false },
-			{ false, true, true, true, false, false, false },
-			{ true, false, false, false, false, false, false },
-			{ true, false, false, true, false, false, false },
-			{ true, false, true, false, false, false, false },
-			{ true, false, true, true, false, false, false },
-			{ true, true, false, false, false, false, false },
-			{ true, true, false, true, false, false, false },
-			{ true, true, true, false, false, false, false },
+	Boolean[][] GatesArray = { { false, false, false, false, false, false, false },
+			{ false, false, false, true, false, false, false }, { false, false, true, false, false, false, false },
+			{ false, false, true, true, false, false, false }, { false, true, false, false, false, false, false },
+			{ false, true, false, true, false, false, false }, { false, true, true, false, false, false, false },
+			{ false, true, true, true, false, false, false }, { true, false, false, false, false, false, false },
+			{ true, false, false, true, false, false, false }, { true, false, true, false, false, false, false },
+			{ true, false, true, true, false, false, false }, { true, true, false, false, false, false, false },
+			{ true, true, false, true, false, false, false }, { true, true, true, false, false, false, false },
 			{ true, true, true, true, false, false, false },
 
 	};
 
-	boolean output;
+	public boolean output;
+
+	public boolean isOutput() {
+		return output;
+	}
+
+	public void setOutput(boolean output) {
+		this.output = output;
+	}
 
 	public drawing() {
 
@@ -226,8 +216,7 @@ public class drawing extends JFrame implements ActionListener {
 
 			} else {
 				{
-					JOptionPane.showMessageDialog(null,
-							"Please select a logic gate first");
+					JOptionPane.showMessageDialog(null, "Please select a logic gate first");
 				}
 			}
 
@@ -235,14 +224,18 @@ public class drawing extends JFrame implements ActionListener {
 	}
 
 	/***************************************************************************************/
-	/************************************** MAIN CLASS ***************************************/
+	/**************************************
+	 * MAIN CLASS
+	 ***************************************/
 	/***************************************************************************************/
 	public static void main(String args[]) {
 		new drawing(); // Calling main prog
 	}
 
 	/***************************************************************************************/
-	/************************************** CANVAS CLASS *************************************/
+	/**************************************
+	 * CANVAS CLASS
+	 *************************************/
 	/**************************************************************************************/
 	class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
 		public MyCanvas() {
@@ -280,55 +273,71 @@ public class drawing extends JFrame implements ActionListener {
 			int ttRows = 15;
 			boolean inputA;
 			boolean inputB;
+			String currentGate = "";
 			for (int i = 0; i < 3; i++) {
 				if (i < 2) {
 					if (printedGates.get(i) == "XOR") {
-
-						for (int j = 0; j < ttRows; j++) {
-							inputA = GatesArray[0][j];
-							System.out.println("input A: " + inputA);
-							inputB = GatesArray[1][j];
-							System.out.println("input B: " + inputB);
-							output = AI.gateOutput(inputA, inputB, "NOR");
-						}
-
-					} else if (printedGates.get(i) == "OR") {
+						currentGate = "XOR";
 						if (i == 0) {
 							for (int j = 0; j < ttRows; j++) {
 								inputA = GatesArray[0][j];
 								System.out.println("input A: " + inputA);
 								inputB = GatesArray[1][j];
 								System.out.println("input B: " + inputB);
-								output = AI.gateOutput(inputA, inputB, "NOR");
+								//output = AI.gateOutput(inputA, inputB, currentGate);
+								setOutput(AI.gateOutput(inputA, inputB, currentGate));
+							}
+						}
+
+					} else if (printedGates.get(i) == "OR") {
+						currentGate = "OR";
+						if (i == 0) {
+							for (int j = 0; j < ttRows; j++) {
+								inputA = GatesArray[0][j];
+								System.out.println("input A: " + inputA);
+								inputB = GatesArray[1][j];
+								System.out.println("input B: " + inputB);
+								//output = AI.gateOutput(inputA, inputB, "NOR");
+								setOutput(AI.gateOutput(inputA, inputB, currentGate));
 							}
 						}
 
 					} else if (printedGates.get(i) == "NOR") {
-						for (int j = 0; j < ttRows; j++) {
-							inputA = GatesArray[0][j];
-							System.out.println("input A: " + inputA);
-							inputB = GatesArray[1][j];
-							System.out.println("input B: " + inputB);
-							output = AI.gateOutput(inputA, inputB, "NOR");
-							System.out.println(output);
+						currentGate = "NOR";
+						if (i == 0) {
+							for (int j = 0; j < ttRows; j++) {
+								inputA = GatesArray[0][j];
+								System.out.println("input A: " + inputA);
+								inputB = GatesArray[1][j];
+								System.out.println("input B: " + inputB);
+								//output = AI.gateOutput(inputA, inputB, currentGate);
+								setOutput(AI.gateOutput(inputA, inputB, currentGate));
+							}
 						}
-
 					} else if (printedGates.get(i) == "AND") {
-						for (int j = 0; j < ttRows; j++) {
-							inputA = GatesArray[0][j];
-							System.out.println("input A: " + inputA);
-							inputB = GatesArray[1][j];
-							System.out.println("input B: " + inputB);
-							output = AI.gateOutput(inputA, inputB, "NOR");
+						currentGate = "AND";
+						if (i == 0) {
+							for (int j = 0; j < ttRows; j++) {
+								inputA = GatesArray[0][j];
+								System.out.println("input A: " + inputA);
+								inputB = GatesArray[1][j];
+								System.out.println("input B: " + inputB);
+								//output = AI.gateOutput(inputA, inputB, currentGate);
+								setOutput(AI.gateOutput(inputA, inputB, currentGate));
+							}
 						}
 
 					} else if (printedGates.get(i) == "NAND") {
-						for (int j = 0; j < ttRows; j++) {
-							inputA = GatesArray[0][j];
-							System.out.println("input A: " + inputA);
-							inputB = GatesArray[1][j];
-							System.out.println("input B: " + inputB);
-							output = AI.gateOutput(inputA, inputB, "NOR");
+						currentGate = "NAND";
+						if (i == 0) {
+							for (int j = 0; j < ttRows; j++) {
+								inputA = GatesArray[0][j];
+								System.out.println("input A: " + inputA);
+								inputB = GatesArray[1][j];
+								System.out.println("input B: " + inputB);
+								//output = AI.gateOutput(inputA, inputB, currentGate);
+								setOutput(AI.gateOutput(inputA, inputB, currentGate));
+							}
 						}
 
 					}
@@ -353,7 +362,7 @@ public class drawing extends JFrame implements ActionListener {
 
 			for (int i = 0; i < 2; i++) {
 				updateGates(gfx);
-				
+
 				translationY = translationY + 100;
 			}
 		}

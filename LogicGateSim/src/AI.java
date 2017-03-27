@@ -32,7 +32,7 @@ public class AI {
 		gateOutput(getinputA, getinputB, getGate);
 	}
 	
-	public boolean gateOutput( boolean getinputA, boolean getinputB, String getGate) {
+	public boolean gateOutput(boolean getinputA, boolean getinputB, String getGate) {
 		inputA = getinputA;
 		inputB = getinputB;
 		Gate = getGate;
