@@ -14,10 +14,7 @@
 
 /***************************************************************************************/
 /**************************************IMPORT MODULES***********************************/
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 /***************************************************************************************/
 import java.awt.*;
 import java.awt.event.*;
@@ -31,12 +28,12 @@ public class drawing extends JFrame implements ActionListener {
 	/************************************** DEFINITIONS **************************************/
 	/***************************************************************************************/
 	JPanel palette, tools, paletteTT;
-<<<<<<< HEAD
+
 	JButton orGate, andGate, xorGate, norGate, nandGate, confirmNumberOfGates, randomTest, checkAnswers;
-=======
+
 	JButton orGate, andGate, xorGate, norGate, nandGate, confirmNumberOfGates,
 			randomTest, checkAnswers;
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
+
 	JTable truthTable;
 	JScrollPane scrollPane;
 
@@ -80,12 +77,11 @@ public class drawing extends JFrame implements ActionListener {
 	// rng for random gate
 	Random randomGate = new Random();
 
-<<<<<<< HEAD
+
 	// AI
 	AI AI;
 
-=======
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
+
 	// List of printable Gates
 	ArrayList<Gates> GatesList = new ArrayList<Gates>();
 	Gates XOR = new Gates(1);
@@ -98,37 +94,55 @@ public class drawing extends JFrame implements ActionListener {
 	ArrayList<String> printedGates = new ArrayList<String>();
 
 	// Column Names
-<<<<<<< HEAD
+
 	// test save
 	String[] ColumnHeadings = { "A", "B", "C", "D", "E", "F", "G" };
-=======
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 
-<<<<<<< HEAD
+
+
 	// 3 Gates Array
 	String[][] GatesArrayS = {
 			// A B C D E F G
-			{ "0", "0", "0", "0", "", "", "" }, { "0", "0", "0", "1", "", "", "" }, { "0", "0", "1", "0", "", "", "" },
-			{ "0", "0", "1", "1", "", "", "" }, { "0", "1", "0", "0", "", "", "" }, { "0", "1", "0", "1", "", "", "" },
-			{ "0", "1", "1", "0", "", "", "" }, { "0", "1", "1", "1", "", "", "" }, { "1", "0", "0", "0", "", "", "" },
-			{ "1", "0", "0", "1", "", "", "" }, { "1", "0", "1", "0", "", "", "" }, { "1", "0", "1", "1", "", "", "" },
-			{ "1", "1", "0", "0", "", "", "" }, { "1", "1", "0", "1", "", "", "" }, { "1", "1", "1", "0", "", "", "" },
-			{ "1", "1", "1", "1", "", "", "" }, };
-=======
-	String[] ColumnHeadings = { "A", "B", "C", "D", "E", "F", "G" };
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
+			{ "0", "0", "0", "0", "", "", "" }, 
+			{ "0", "0", "0", "1", "", "", "" }, 
+			{ "0", "0", "1", "0", "", "", "" },
+			{ "0", "0", "1", "1", "", "", "" }, 
+			{ "0", "1", "0", "0", "", "", "" }, 
+			{ "0", "1", "0", "1", "", "", "" },
+			{ "0", "1", "1", "0", "", "", "" }, 
+			{ "0", "1", "1", "1", "", "", "" }, 
+			{ "1", "0", "0", "0", "", "", "" },
+			{ "1", "0", "0", "1", "", "", "" }, 
+			{ "1", "0", "1", "0", "", "", "" }, 
+			{ "1", "0", "1", "1", "", "", "" },
+			{ "1", "1", "0", "0", "", "", "" }, 
+			{ "1", "1", "0", "1", "", "", "" }, 
+			{ "1", "1", "1", "0", "", "", "" },
+			{ "1", "1", "1", "1", "", "", "" }, 
+		};
 
-<<<<<<< HEAD
-	Boolean[][] GatesArray = { { false, false, false, false, false, false, false },
-			{ false, false, false, true, false, false, false }, { false, false, true, false, false, false, false },
-			{ false, false, true, true, false, false, false }, { false, true, false, false, false, false, false },
-			{ false, true, false, true, false, false, false }, { false, true, true, false, false, false, false },
-			{ false, true, true, true, false, false, false }, { true, false, false, false, false, false, false },
-			{ true, false, false, true, false, false, false }, { true, false, true, false, false, false, false },
-			{ true, false, true, true, false, false, false }, { true, true, false, false, false, false, false },
-			{ true, true, false, true, false, false, false }, { true, true, true, false, false, false, false },
+	String[] ColumnHeadings = { "A", "B", "C", "D", "E", "F", "G" };
+
+
+
+	Boolean[][] GatesArray = { 
+			{ false, false, false, false, false, false, false },
+			{ false, false, false, true, false, false, false },
+			{ false, false, true, false, false, false, false },
+			{ false, false, true, true, false, false, false }, 
+			{ false, true, false, false, false, false, false },
+			{ false, true, false, true, false, false, false }, 
+			{ false, true, true, false, false, false, false },
+			{ false, true, true, true, false, false, false }, 
+			{ true, false, false, false, false, false, false },
+			{ true, false, false, true, false, false, false },
+			{ true, false, true, false, false, false, false },
+			{ true, false, true, true, false, false, false }, 
+			{ true, true, false, false, false, false, false },
+			{ true, true, false, true, false, false, false }, 
+			{ true, true, true, false, false, false, false },
 			{ true, true, true, true, false, false, false },
-=======
+
 	// 7 Gates Array
 	String[][] GatesArray = {
 			// A B C D E F G
@@ -149,15 +163,9 @@ public class drawing extends JFrame implements ActionListener {
 			{ "1", "1", "1", "0", "", "", "" },
 			{ "1", "1", "1", "1", "", "", "" }, 
 		};
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 
-<<<<<<< HEAD
 	};
-=======
-	boolean output;
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 
-<<<<<<< HEAD
 	public boolean output;
 
 	public boolean isOutput() {
@@ -168,75 +176,7 @@ public class drawing extends JFrame implements ActionListener {
 		this.output = output;
 	}
 
-	public drawing() {
 
-		setSize(canvasSizeX, canvasSizeY);
-		palette = new JPanel(); // Watch where this gets placed to
-		paletteTT = new JPanel();
-		palette.setLayout(new GridLayout(2, 3, 5, 5)); // grid layout
-		setTitle("Logic Gates");
-
-		// drawTruthTable();
-
-		// add gates to arraylist GatesList
-		if (GatesList.isEmpty()) {
-			GatesList.add(XOR);
-			GatesList.add(OR);
-			GatesList.add(NOR);
-			GatesList.add(AND);
-			GatesList.add(NAND);
-		}
-
-		// initialise AI
-
-		// Instance of classes
-		ORGate = new drawingOR(); // drawingOR.java
-		ANDGate = new drawingAND(); // drawingAND.java
-		XORGate = new drawingXOR(); // drawingXOR.java
-		NORGate = new drawingNOR(); // drawingNOR.java
-		NANDGate = new drawingNAND(); // drawingNAND.java
-
-		// Assign components with variables
-		orGate = new JButton("OR Gate");
-		andGate = new JButton("AND Gate");
-		xorGate = new JButton("XOR Gate");
-		norGate = new JButton("NOR Gate");
-		nandGate = new JButton("NAND Gate");
-		randomTest = new JButton("Random");
-		checkAnswers = new JButton("Check");
-		confirmNumberOfGates = new JButton("Confirm");
-
-		// used to determine how complex the logic gate system will be
-		cbx_numberOfGates = new JComboBox(numberOfGates);
-		palette.add(cbx_numberOfGates);
-		cbx_numberOfGates.setSelectedIndex(0);
-		cbx_numberOfGates.addActionListener(this);
-
-		// Assign button to confirm number of logic gates
-		palette.add(confirmNumberOfGates);
-		confirmNumberOfGates.addActionListener(this);
-
-		// Assign button to draw a single logic gate - for testing
-		palette.add(orGate);
-		orGate.addActionListener(this);
-		palette.add(andGate);
-		andGate.addActionListener(this);
-		palette.add(xorGate);
-		xorGate.addActionListener(this);
-		palette.add(norGate);
-		norGate.addActionListener(this);
-		palette.add(nandGate);
-		nandGate.addActionListener(this);
-		palette.add(randomTest);
-		randomTest.addActionListener(this);
-
-		// Gate buttons on top
-		getContentPane().add(palette, "North");
-
-		// Truth Tables
-
-		// truthTable = new JTable(GatesArray, ColumnHeadings);
-=======
 	public drawing() {
 
 		setSize(canvasSizeX, canvasSizeY);
@@ -302,7 +242,7 @@ public class drawing extends JFrame implements ActionListener {
 
 		// Truth Tables
 
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
+
 		truthTable = new JTable(GatesArray, ColumnHeadings);
 		// paletteTT.add(truthTable);
 		paletteTT.add(new JScrollPane(truthTable));
@@ -329,12 +269,9 @@ public class drawing extends JFrame implements ActionListener {
 
 			} else {
 				{
-<<<<<<< HEAD
+
 					JOptionPane.showMessageDialog(null, "Please select a logic gate first");
-=======
-					JOptionPane.showMessageDialog(null,
-							"Please select a logic gate first");
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
+
 				}
 			}
 
@@ -342,26 +279,14 @@ public class drawing extends JFrame implements ActionListener {
 	}
 
 	/***************************************************************************************/
-<<<<<<< HEAD
-	/**************************************
-	 * MAIN CLASS
-	 ***************************************/
-=======
 	/************************************** MAIN CLASS ***************************************/
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 	/***************************************************************************************/
 	public static void main(String args[]) {
 		new drawing(); // Calling main prog
 	}
 
 	/***************************************************************************************/
-<<<<<<< HEAD
-	/**************************************
-	 * CANVAS CLASS
-	 *************************************/
-=======
 	/************************************** CANVAS CLASS *************************************/
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 	/**************************************************************************************/
 	class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
 		public MyCanvas() {
@@ -377,11 +302,9 @@ public class drawing extends JFrame implements ActionListener {
 			System.out.println(index);
 			GatesList.get(index).getGate(gfx, translationX, translationY);
 			addPrintedGate();
-<<<<<<< HEAD
+
 			completeTable();
 
-=======
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 		}
 
 		public void addPrintedGate() {
@@ -398,7 +321,7 @@ public class drawing extends JFrame implements ActionListener {
 			}
 		}
 
-<<<<<<< HEAD
+
 		public void completeTable() {
 			int ttRows = 15;
 			boolean inputA;
@@ -475,8 +398,6 @@ public class drawing extends JFrame implements ActionListener {
 			}
 		}
 
-=======
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 		public void updateSingleGate(Graphics gfx) {
 			translationX = translationX + 270;
 			translationY = translationY + 75;

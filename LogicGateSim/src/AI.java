@@ -32,7 +32,6 @@ public class AI {
 		gateOutput(getinputA, getinputB, getGate);
 	}
 	
-<<<<<<< HEAD
 	public boolean gateOutput(boolean getinputA, boolean getinputB, String getGate) {
 		inputA = getinputA;
 		inputB = getinputB;
@@ -79,7 +78,7 @@ public class AI {
 			for(row = 7; row < 10; row = row++){
 				if ((logicGates[row][column] == inputA) && (logicGates[row][column + 1] == inputB)){
 					output = true;
-=======
+
 	public boolean gateOutput( boolean getinputA, boolean getinputB, String getGate) {
 		inputA = getinputA;
 		inputB = getinputB;
@@ -126,7 +125,6 @@ public class AI {
 			for(row = 7; row < 10; row = row++){
 				if (logicGates[row][column] == inputA && logicGates[row][column + 1] == inputB){
 					return output = true;
->>>>>>> branch 'master' of https://github.com/ShoaibWaseem/LogicGateSim.git
 				}
 			}
 		}
