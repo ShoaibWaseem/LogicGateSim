@@ -31,8 +31,6 @@ public class drawing extends JFrame implements ActionListener {
 
 	JButton orGate, andGate, xorGate, norGate, nandGate, confirmNumberOfGates, randomTest, checkAnswers;
 
-	JButton orGate, andGate, xorGate, norGate, nandGate, confirmNumberOfGates,
-			randomTest, checkAnswers;
 
 	JTable truthTable;
 	JScrollPane scrollPane;
@@ -121,7 +119,6 @@ public class drawing extends JFrame implements ActionListener {
 			{ "1", "1", "1", "1", "", "", "" }, 
 		};
 
-	String[] ColumnHeadings = { "A", "B", "C", "D", "E", "F", "G" };
 
 
 
@@ -142,39 +139,15 @@ public class drawing extends JFrame implements ActionListener {
 			{ true, true, false, true, false, false, false }, 
 			{ true, true, true, false, false, false, false },
 			{ true, true, true, true, false, false, false },
-
-	// 7 Gates Array
-	String[][] GatesArray = {
-			// A B C D E F G
-			{ "0", "0", "0", "0", "", "", "" },
-			{ "0", "0", "0", "1", "", "", "" },
-			{ "0", "0", "1", "0", "", "", "" },
-			{ "0", "0", "1", "1", "", "", "" },
-			{ "0", "1", "0", "0", "", "", "" },
-			{ "0", "1", "0", "1", "", "", "" },
-			{ "0", "1", "1", "0", "", "", "" },
-			{ "0", "1", "1", "1", "", "", "" },
-			{ "1", "0", "0", "0", "", "", "" },
-			{ "1", "0", "0", "1", "", "", "" },
-			{ "1", "0", "1", "0", "", "", "" },
-			{ "1", "0", "1", "1", "", "", "" },
-			{ "1", "1", "0", "0", "", "", "" },
-			{ "1", "1", "0", "1", "", "", "" },
-			{ "1", "1", "1", "0", "", "", "" },
-			{ "1", "1", "1", "1", "", "", "" }, 
-		};
-
 	};
+	// 7 Gates Array
+	
+	static boolean inputA;
+	static boolean inputB;
+	static String currentGate;
 
 	public boolean output;
 
-	public boolean isOutput() {
-		return output;
-	}
-
-	public void setOutput(boolean output) {
-		this.output = output;
-	}
 
 
 	public drawing() {
@@ -202,6 +175,7 @@ public class drawing extends JFrame implements ActionListener {
 		XORGate = new drawingXOR(); // drawingXOR.java
 		NORGate = new drawingNOR(); // drawingNOR.java
 		NANDGate = new drawingNAND(); // drawingNAND.java
+		
 
 		// Assign components with variables
 		orGate = new JButton("OR Gate");
@@ -255,6 +229,8 @@ public class drawing extends JFrame implements ActionListener {
 		setVisible(true); // visible true for all elements
 
 	}
+	
+	
 
 	public void actionPerformed(ActionEvent ev) {
 
@@ -277,6 +253,18 @@ public class drawing extends JFrame implements ActionListener {
 
 		}
 	}
+	
+	public static boolean getInputA() {
+		return inputA;
+	}
+	
+	public static boolean getInputB() {
+		return inputB;
+	}
+	
+	public static String getGate() {
+		return currentGate;
+	}
 
 	/***************************************************************************************/
 	/************************************** MAIN CLASS ***************************************/
@@ -289,11 +277,17 @@ public class drawing extends JFrame implements ActionListener {
 	/************************************** CANVAS CLASS *************************************/
 	/**************************************************************************************/
 	class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
+		
+
+		
+		
 		public MyCanvas() {
 			addMouseListener(this);
 			// addMouseMotionListener( this);
 
 			setVisible(true); // Better to set visible than to not
+			
+			
 		}
 
 		public void updateGates(Graphics gfx) {
@@ -324,9 +318,6 @@ public class drawing extends JFrame implements ActionListener {
 
 		public void completeTable() {
 			int ttRows = 15;
-			boolean inputA;
-			boolean inputB;
-			String currentGate = "";
 			for (int i = 0; i < 3; i++) {
 				if (i < 2) {
 					if (printedGates.get(i) == "XOR") {
@@ -338,7 +329,9 @@ public class drawing extends JFrame implements ActionListener {
 								inputB = GatesArray[1][j];
 								System.out.println("input B: " + inputB);
 								//output = AI.gateOutput(inputA, inputB, currentGate);
-								setOutput(AI.gateOutput(inputA, inputB, currentGate));
+
+								
+								output = new AI();
 							}
 						}
 
@@ -351,7 +344,7 @@ public class drawing extends JFrame implements ActionListener {
 								inputB = GatesArray[1][j];
 								System.out.println("input B: " + inputB);
 								//output = AI.gateOutput(inputA, inputB, "NOR");
-								setOutput(AI.gateOutput(inputA, inputB, currentGate));
+
 							}
 						}
 
@@ -364,7 +357,7 @@ public class drawing extends JFrame implements ActionListener {
 								inputB = GatesArray[1][j];
 								System.out.println("input B: " + inputB);
 								//output = AI.gateOutput(inputA, inputB, currentGate);
-								setOutput(AI.gateOutput(inputA, inputB, currentGate));
+
 							}
 						}
 					} else if (printedGates.get(i) == "AND") {
@@ -376,7 +369,7 @@ public class drawing extends JFrame implements ActionListener {
 								inputB = GatesArray[1][j];
 								System.out.println("input B: " + inputB);
 								//output = AI.gateOutput(inputA, inputB, currentGate);
-								setOutput(AI.gateOutput(inputA, inputB, currentGate));
+
 							}
 						}
 
@@ -389,7 +382,6 @@ public class drawing extends JFrame implements ActionListener {
 								inputB = GatesArray[1][j];
 								System.out.println("input B: " + inputB);
 								//output = AI.gateOutput(inputA, inputB, currentGate);
-								setOutput(AI.gateOutput(inputA, inputB, currentGate));
 							}
 						}
 
@@ -397,7 +389,7 @@ public class drawing extends JFrame implements ActionListener {
 				}
 			}
 		}
-
+		
 		public void updateSingleGate(Graphics gfx) {
 			translationX = translationX + 270;
 			translationY = translationY + 75;
