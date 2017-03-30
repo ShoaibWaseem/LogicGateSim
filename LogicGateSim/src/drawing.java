@@ -31,7 +31,6 @@ public class drawing extends JFrame implements ActionListener {
 
 	JButton orGate, andGate, xorGate, norGate, nandGate, confirmNumberOfGates, randomTest, checkAnswers;
 
-
 	JTable truthTable;
 	JScrollPane scrollPane;
 
@@ -148,7 +147,7 @@ public class drawing extends JFrame implements ActionListener {
 
 	public static boolean output;
 
-
+	public static int gateIndex;
 
 	public drawing() {
 
@@ -243,6 +242,7 @@ public class drawing extends JFrame implements ActionListener {
 			// Random Gate Generation
 			if (cbx_index != 0) {
 				// if gate number is chosen
+				gateIndex = 0;
 				printedGates.clear();
 				repaint();
 
@@ -280,10 +280,7 @@ public class drawing extends JFrame implements ActionListener {
 	/************************************** CANVAS CLASS *************************************/
 	/**************************************************************************************/
 	class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
-		
-
-		
-		
+				
 		public MyCanvas() {
 			addMouseListener(this);
 			// addMouseMotionListener( this);
@@ -300,6 +297,7 @@ public class drawing extends JFrame implements ActionListener {
 			GatesList.get(index).getGate(gfx, translationX, translationY);
 			addPrintedGate();
 			completeTable();
+			gateIndex++;
 			
 
 		}
@@ -321,18 +319,18 @@ public class drawing extends JFrame implements ActionListener {
 
 		public void completeTable() {
 			int ttRows = 16;
-			for (int i = 0; i < 3; i++) {
-				if (i < 2) {
-					if (printedGates.get(i) == "XOR") {
+			
+				if (gateIndex < 2) {
+					if (printedGates.get(gateIndex) == "XOR") {
 						currentGate = "XOR";
-						if (i == 0) {
+						if (gateIndex == 0) {
 							for (int j = 0; j < ttRows; j++) {
 								System.out.println("Pass Number " + j);
 								System.out.println(currentGate);
 								
-								inputA = (boolean) GatesArray[0][j];
+								inputA = (boolean) GatesArray[j][0];
 								System.out.println("input A: " + inputA);
-								inputB = (boolean) GatesArray[1][j];
+								inputB = (boolean) GatesArray[j][1];
 								System.out.println("input B: " + inputB);
 																
 								output = AI.gateOutput(inputA, inputB, currentGate);
@@ -343,16 +341,16 @@ public class drawing extends JFrame implements ActionListener {
 							}
 						}
 
-					} else if (printedGates.get(i) == "OR") {
+					} else if (printedGates.get(gateIndex) == "OR") {
 						currentGate = "OR";
-						if (i == 0) {
+						if (gateIndex == 0) {
 							for (int j = 0; j < ttRows; j++) {
 								System.out.println("Pass Number " + j);
 								System.out.println(currentGate);
 								
-								inputA = (boolean) GatesArray[0][j];
+								inputA = (boolean) GatesArray[j][0];
 								System.out.println("input A: " + inputA);
-								inputB = (boolean) GatesArray[1][j];
+								inputB = (boolean) GatesArray[j][1];
 								System.out.println("input B: " + inputB);
 								//output = AI.gateOutput(inputA, inputB, "NOR");
 								
@@ -363,16 +361,16 @@ public class drawing extends JFrame implements ActionListener {
 							}
 						}
 
-					} else if (printedGates.get(i) == "NOR") {
+					} else if (printedGates.get(gateIndex) == "NOR") {
 						currentGate = "NOR";
-						if (i == 0) {
+						if (gateIndex == 0) {
 							for (int j = 0; j < ttRows; j++) {
 								System.out.println("Pass Number " + j);
 								System.out.println(currentGate);
 								
-								inputA = (boolean) GatesArray[0][j];
+								inputA = (boolean) GatesArray[j][0];
 								System.out.println("input A: " + inputA);
-								inputB = (boolean) GatesArray[1][j];
+								inputB = (boolean) GatesArray[j][1];
 								System.out.println("input B: " + inputB);
 								//output = AI.gateOutput(inputA, inputB, currentGate);
 								
@@ -382,16 +380,16 @@ public class drawing extends JFrame implements ActionListener {
 
 							}
 						}
-					} else if (printedGates.get(i) == "AND") {
+					} else if (printedGates.get(gateIndex) == "AND") {
 						currentGate = "AND";
-						if (i == 0) {
+						if (gateIndex == 0) {
 							for (int j = 0; j < ttRows; j++) {
 								System.out.println("Pass Number " + j);
 								System.out.println(currentGate);
 								
-								inputA = (boolean) GatesArray[0][j];
+								inputA = (boolean) GatesArray[j][0];
 								System.out.println("input A: " + inputA);
-								inputB = (boolean) GatesArray[1][j];
+								inputB = (boolean) GatesArray[j][1];
 								System.out.println("input B: " + inputB);
 								//output = AI.gateOutput(inputA, inputB, currentGate);
 								
@@ -402,16 +400,16 @@ public class drawing extends JFrame implements ActionListener {
 							}
 						}
 
-					} else if (printedGates.get(i) == "NAND") {
+					} else if (printedGates.get(gateIndex) == "NAND") {
 						currentGate = "NAND";
-						if (i == 0) {
+						if (gateIndex == 0) {
 							for (int j = 0; j < ttRows; j++) {
 								System.out.println("Pass Number " + j);
 								System.out.println(currentGate);
 								
-								inputA = (boolean) GatesArray[0][j];
+								inputA = (boolean) GatesArray[j][0];
 								System.out.println("input A: " + inputA);
-								inputB = (boolean) GatesArray[1][j];
+								inputB = (boolean) GatesArray[j][1];
 								System.out.println("input B: " + inputB);
 								//output = AI.gateOutput(inputA, inputB, currentGate);
 								
@@ -420,9 +418,8 @@ public class drawing extends JFrame implements ActionListener {
 								
 							}
 						}
-
 					}
-				}
+				
 			}
 		}
 		
