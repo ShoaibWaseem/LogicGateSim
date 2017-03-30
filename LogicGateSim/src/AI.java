@@ -1,7 +1,7 @@
 
 public class AI {
 	
-	public Boolean logicGates[][] = {
+	public static Boolean logicGates[][] = {
 	
 	//						Input A		Input B
 	//XOR true Statements
@@ -24,16 +24,12 @@ public class AI {
 	boolean inputA;
 	boolean inputB;
 	boolean output;
-	static String Gate = "";
+	String Gate = "";
 	
 
 
-	public AI() {
+	public static void AI() {
 		
-		inputA = drawing.getInputA();
-		inputB = drawing.getInputB();
-		Gate = drawing.getGate();
-		output = gateOutput(inputA, inputB, Gate);
 		
 	}
 	
