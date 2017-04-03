@@ -14,13 +14,12 @@
 
 /***************************************************************************************/
 /**************************************IMPORT MODULES***********************************/
-
 /***************************************************************************************/
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
-
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -30,7 +29,7 @@ public class drawing extends JFrame implements ActionListener {
 	/***************************************************************************************/
 	JPanel palette, tools, paletteTT;
 
-	JButton orGate, andGate, xorGate, norGate, nandGate, confirmNumberOfGates, randomTest, checkAnswers;
+	JButton confirmNumberOfGates, checkAnswers;
 
 	JTable truthTable;
 	JScrollPane scrollPane;
@@ -45,8 +44,6 @@ public class drawing extends JFrame implements ActionListener {
 	int canvasSizeX = 1200;
 	int canvasSizeY = 800;
 
-	// Coordinate integers
-	int gate; // 1=OR, 2=NAND, 3=XOR, 4=NOR, 5=NAND
 
 	// coordinate translation for multiple gates
 	int translationX;
@@ -87,17 +84,8 @@ public class drawing extends JFrame implements ActionListener {
 	// test save
 	String[] ColumnHeadings = { "A", "B", "C", "D", "E", "F", "G" };
 
-	// 3 Gates Array
-	String[][] GatesArrayS = {
-			// A B C D E F G
-			{ "0", "0", "0", "0", "", "", "" }, { "0", "0", "0", "1", "", "", "" }, { "0", "0", "1", "0", "", "", "" },
-			{ "0", "0", "1", "1", "", "", "" }, { "0", "1", "0", "0", "", "", "" }, { "0", "1", "0", "1", "", "", "" },
-			{ "0", "1", "1", "0", "", "", "" }, { "0", "1", "1", "1", "", "", "" }, { "1", "0", "0", "0", "", "", "" },
-			{ "1", "0", "0", "1", "", "", "" }, { "1", "0", "1", "0", "", "", "" }, { "1", "0", "1", "1", "", "", "" },
-			{ "1", "1", "0", "0", "", "", "" }, { "1", "1", "0", "1", "", "", "" }, { "1", "1", "1", "0", "", "", "" },
-			{ "1", "1", "1", "1", "", "", "" }, };
 
-	Object[][] GatesArray = { { false, false, false, false, false, false, false },
+	Object[][] initialGates = { { false, false, false, false, false, false, false },
 			{ false, false, false, true, false, false, false }, { false, false, true, false, false, false, false },
 			{ false, false, true, true, false, false, false }, { false, true, false, false, false, false, false },
 			{ false, true, false, true, false, false, false }, { false, true, true, false, false, false, false },
@@ -107,7 +95,7 @@ public class drawing extends JFrame implements ActionListener {
 			{ true, true, false, true, false, false, false }, { true, true, true, false, false, false, false },
 			{ true, true, true, true, false, false, false }, };
 	// 7 Gates Array
-	Object[][] completeGatesArray = { { false, false, false, false, false, false, false },
+	Object[][] completeGates = { { false, false, false, false, false, false, false },
 			{ false, false, false, true, false, false, false }, { false, false, true, false, false, false, false },
 			{ false, false, true, true, false, false, false }, { false, true, false, false, false, false, false },
 			{ false, true, false, true, false, false, false }, { false, true, true, false, false, false, false },
@@ -116,6 +104,8 @@ public class drawing extends JFrame implements ActionListener {
 			{ true, false, true, true, false, false, false }, { true, true, false, false, false, false, false },
 			{ true, true, false, true, false, false, false }, { true, true, true, false, false, false, false },
 			{ true, true, true, true, false, false, false }, };
+	
+	boolean[] correctAnswers = new boolean[48];
 	
 	
 	static boolean inputA;
@@ -146,12 +136,6 @@ public class drawing extends JFrame implements ActionListener {
 		}
 
 		// Assign components with variables
-		orGate = new JButton("OR Gate");
-		andGate = new JButton("AND Gate");
-		xorGate = new JButton("XOR Gate");
-		norGate = new JButton("NOR Gate");
-		nandGate = new JButton("NAND Gate");
-		randomTest = new JButton("Random");
 		checkAnswers = new JButton("Check");
 		confirmNumberOfGates = new JButton("Confirm");
 
@@ -165,29 +149,17 @@ public class drawing extends JFrame implements ActionListener {
 		palette.add(confirmNumberOfGates);
 		confirmNumberOfGates.addActionListener(this);
 
-		// Assign button to draw a single logic gate - for testing
-		palette.add(orGate);
-		orGate.addActionListener(this);
-		palette.add(andGate);
-		andGate.addActionListener(this);
-		palette.add(xorGate);
-		xorGate.addActionListener(this);
-		palette.add(norGate);
-		norGate.addActionListener(this);
-		palette.add(nandGate);
-		nandGate.addActionListener(this);
-		palette.add(randomTest);
-		randomTest.addActionListener(this);
-
 		// Gate buttons on top
 		getContentPane().add(palette, "North");
 
 		// Truth Tables
 
-		truthTable = new JTable(GatesArray, ColumnHeadings);
+		truthTable = new JTable(initialGates, ColumnHeadings);
 		// paletteTT.add(truthTable);
 		paletteTT.add(new JScrollPane(truthTable));
 		paletteTT.add(checkAnswers);
+		checkAnswers.addActionListener(this);
+		
 		getContentPane().add(paletteTT, "South");
 
 		// Draw area
@@ -214,26 +186,34 @@ public class drawing extends JFrame implements ActionListener {
 
 			} else {
 				{
-
 					JOptionPane.showMessageDialog(null, "Please select a logic gate first");
 
 				}
 			}
 
 		}
+		
+		if (("Check".equals(ev.getActionCommand()))) {
+			int index = 0;
+			for(int col = 4; col < 7; col++) {
+				for(int row = 0; row < 16; row++) {
+					if(initialGates[row][col] == completeGates[row][col]) {
+						correctAnswers[index] = true;
+					} else {
+						correctAnswers[index] = false;
+					}
+					index++;
+				}
+			}
+			if (Arrays.asList(correctAnswers).contains(false)) {
+				JOptionPane.showMessageDialog(null, "WRONG!");
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Congratulations! You are correct!");
+			}
+		}	
 	}
-
-	public static boolean getInputA() {
-		return inputA;
-	}
-
-	public static boolean getInputB() {
-		return inputB;
-	}
-
-	public static String getGate() {
-		return currentGate;
-	}
+	
 
 	/***************************************************************************************/
 	/**************************************MAIN CLASS***************************************/
@@ -322,18 +302,17 @@ public class drawing extends JFrame implements ActionListener {
 				System.out.println("Pass Number " + j);
 				System.out.println(currentGate);
 
-				inputA = (boolean) completeGatesArray[j][columnA];
+				inputA = (boolean) completeGates[j][columnA];
 				System.out.println("input A: " + inputA);
-				inputB = (boolean) completeGatesArray[j][columnB];
+				inputB = (boolean) completeGates[j][columnB];
 				System.out.println("input B: " + inputB);
 
 				output = AI.gateOutput(inputA, inputB, currentGate);
-				completeGatesArray[j][outputColumn] = output;
+				completeGates[j][outputColumn] = output;
 				
 				truthTable.repaint();
 			}
 		}
-
 
 		public void updateSingleGate(Graphics gfx) {
 			translationX = translationX + 270;
@@ -384,14 +363,11 @@ public class drawing extends JFrame implements ActionListener {
 
 				updateSingleGate(gfx);
 			}
-
 			else if (cbx_index == 2) {
 
 				updateTwoGates(gfx);
 				updateFinalGate(gfx);
-
 			}
-
 			getAll();
 		}
 
