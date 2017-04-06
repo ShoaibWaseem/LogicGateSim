@@ -2,12 +2,9 @@ import java.awt.*;
 import javax.swing.*;
 
 
+@SuppressWarnings("serial")
 public class Gates extends JFrame {
-	
-	
-
-	
-	
+		
 	//NOR.getGate(gfx, 100, 100);
 	
 	int gateID;

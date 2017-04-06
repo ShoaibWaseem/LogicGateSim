@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
 public class drawing extends JFrame implements ActionListener {
@@ -85,27 +86,45 @@ public class drawing extends JFrame implements ActionListener {
 	String[] ColumnHeadings = { "A", "B", "C", "D", "E", "F", "G" };
 
 
-	Object[][] initialGates = { { false, false, false, false, false, false, false },
-			{ false, false, false, true, false, false, false }, { false, false, true, false, false, false, false },
-			{ false, false, true, true, false, false, false }, { false, true, false, false, false, false, false },
-			{ false, true, false, true, false, false, false }, { false, true, true, false, false, false, false },
-			{ false, true, true, true, false, false, false }, { true, false, false, false, false, false, false },
-			{ true, false, false, true, false, false, false }, { true, false, true, false, false, false, false },
-			{ true, false, true, true, false, false, false }, { true, true, false, false, false, false, false },
-			{ true, true, false, true, false, false, false }, { true, true, true, false, false, false, false },
-			{ true, true, true, true, false, false, false }, };
+	Object[][] initialGates = { 
+			{ false, false, false, false, false, false, false },
+			{ false, false, false, true, false, false, false }, 
+			{ false, false, true, false, false, false, false },
+			{ false, false, true, true, false, false, false }, 
+			{ false, true, false, false, false, false, false },
+			{ false, true, false, true, false, false, false }, 
+			{ false, true, true, false, false, false, false },
+			{ false, true, true, true, false, false, false }, 
+			{ true, false, false, false, false, false, false },
+			{ true, false, false, true, false, false, false }, 
+			{ true, false, true, false, false, false, false },
+			{ true, false, true, true, false, false, false }, 
+			{ true, true, false, false, false, false, false },
+			{ true, true, false, true, false, false, false }, 
+			{ true, true, true, false, false, false, false },
+			{ true, true, true, true, false, false, false }
+		};
 	// 7 Gates Array
-	Object[][] completeGates = { { false, false, false, false, false, false, false },
-			{ false, false, false, true, false, false, false }, { false, false, true, false, false, false, false },
-			{ false, false, true, true, false, false, false }, { false, true, false, false, false, false, false },
-			{ false, true, false, true, false, false, false }, { false, true, true, false, false, false, false },
-			{ false, true, true, true, false, false, false }, { true, false, false, false, false, false, false },
-			{ true, false, false, true, false, false, false }, { true, false, true, false, false, false, false },
-			{ true, false, true, true, false, false, false }, { true, true, false, false, false, false, false },
-			{ true, true, false, true, false, false, false }, { true, true, true, false, false, false, false },
-			{ true, true, true, true, false, false, false }, };
+	Object[][] completeGates = { 
+			{ false, false, false, false, false, false, false },
+			{ false, false, false, true, false, false, false },
+			{ false, false, true, false, false, false, false },
+			{ false, false, true, true, false, false, false },
+			{ false, true, false, false, false, false, false },
+			{ false, true, false, true, false, false, false },
+			{ false, true, true, false, false, false, false },
+			{ false, true, true, true, false, false, false }, 
+			{ true, false, false, false, false, false, false },
+			{ true, false, false, true, false, false, false },
+			{ true, false, true, false, false, false, false },
+			{ true, false, true, true, false, false, false },
+			{ true, true, false, false, false, false, false },
+			{ true, true, false, true, false, false, false },
+			{ true, true, true, false, false, false, false },
+			{ true, true, true, true, false, false, false }, 
+		};
 	
-	boolean[] correctAnswers = new boolean[48];
+	boolean[] correctAnswers = new boolean[112];
 	
 	
 	static boolean inputA;
@@ -154,9 +173,11 @@ public class drawing extends JFrame implements ActionListener {
 
 		// Truth Tables
 
-		truthTable = new JTable(initialGates, ColumnHeadings);
+		DefaultTableModel tTable = new DefaultTableModel(initialGates, ColumnHeadings);
+		truthTable = new JTable(tTable);
 		// paletteTT.add(truthTable);
 		paletteTT.add(new JScrollPane(truthTable));
+		
 		paletteTT.add(checkAnswers);
 		checkAnswers.addActionListener(this);
 		
@@ -176,7 +197,7 @@ public class drawing extends JFrame implements ActionListener {
 
 		if (("Confirm".equals(ev.getActionCommand()))) {
 			cbx_index = cbx_numberOfGates.getSelectedIndex();
-
+			index = 0;
 			// Random Gate Generation
 			if (cbx_index != 0) {
 				// if gate number is chosen
@@ -187,31 +208,63 @@ public class drawing extends JFrame implements ActionListener {
 			} else {
 				{
 					JOptionPane.showMessageDialog(null, "Please select a logic gate first");
-
 				}
 			}
 
 		}
 		
 		if (("Check".equals(ev.getActionCommand()))) {
-			int index = 0;
-			for(int col = 4; col < 7; col++) {
-				for(int row = 0; row < 16; row++) {
-					if(initialGates[row][col] == completeGates[row][col]) {
-						correctAnswers[index] = true;
+			int arrayindex = 0;
+			int rowCount = truthTable.getRowCount();
+			int colCount = truthTable.getColumnCount();
+			DefaultTableModel dtm = (DefaultTableModel) truthTable.getModel();
+			Object[][] userAnswers = new Object[rowCount][colCount];
+			
+			boolean blah;
+			
+			for(int i = 0; i < rowCount; i++) {
+				for(int j = 0; j < colCount; j++) {
+					userAnswers[i][j] = dtm.getValueAt(i, j);
+					
+					if(userAnswers[i][j].equals(completeGates[i][j])) {
+						correctAnswers[arrayindex] = true;
 					} else {
-						correctAnswers[index] = false;
+						correctAnswers[arrayindex] = false;
 					}
-					index++;
+					arrayindex++;
 				}
+				
 			}
-			if (Arrays.asList(correctAnswers).contains(false)) {
+			
+			
+
+			/*for (int col = 4; col < 7; col++) {
+				System.out.println("Column: " + col);
+				for (int x = 0; x < 16; x++) {
+					blah = userAnswers[x][col].equals(completeGates[x][col]);
+					if(userAnswers[x][col].equals(completeGates[x][col])) {
+						correctAnswers[arrayindex] = true;
+					} else {
+						correctAnswers[arrayindex] = false;
+					}
+				}
+			}		*/	
+			System.out.println(correctAnswers);
+
+			
+			
+			//was needed to work. Would rather not use a local variable for no reason
+			boolean correctAnswer = Arrays.asList(correctAnswers).contains(false);
+			
+			if (correctAnswer == false) {
 				JOptionPane.showMessageDialog(null, "WRONG!");
 			}
-			else {
+			else if (correctAnswer == true){
 				JOptionPane.showMessageDialog(null, "Congratulations! You are correct!");
 			}
-		}	
+
+		}
+		
 	}
 	
 
