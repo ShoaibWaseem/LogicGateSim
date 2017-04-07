@@ -124,7 +124,7 @@ public class drawing extends JFrame implements ActionListener {
 			{ true, true, true, true, false, false, false }, 
 		};
 	
-	boolean[] correctAnswers = new boolean[112];
+	
 	
 	
 	static boolean inputA;
@@ -219,14 +219,17 @@ public class drawing extends JFrame implements ActionListener {
 			int colCount = truthTable.getColumnCount();
 			DefaultTableModel dtm = (DefaultTableModel) truthTable.getModel();
 			Object[][] userAnswers = new Object[rowCount][colCount];
-			
-			boolean blah;
+			boolean[] correctAnswers = new boolean[112];
+			boolean sillycheck;
 			
 			for(int i = 0; i < rowCount; i++) {
 				for(int j = 0; j < colCount; j++) {
 					userAnswers[i][j] = dtm.getValueAt(i, j);
+					System.out.println("Row: " + i + " Column: " + j + " Value: " + userAnswers[i][j]);
 					
-					if(userAnswers[i][j].equals(completeGates[i][j])) {
+					sillycheck = userAnswers[i][j].equals(completeGates[i][j]);
+					System.out.println(sillycheck);
+					if(sillycheck) {
 						correctAnswers[arrayindex] = true;
 					} else {
 						correctAnswers[arrayindex] = false;
@@ -249,7 +252,7 @@ public class drawing extends JFrame implements ActionListener {
 					}
 				}
 			}		*/	
-			System.out.println(correctAnswers);
+			System.out.println(Arrays.toString(correctAnswers));
 
 			
 			
