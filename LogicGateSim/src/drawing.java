@@ -147,7 +147,7 @@ public class drawing extends JFrame implements ActionListener {
 		setSize(canvasSizeX, canvasSizeY);
 		palette = new JPanel(); // Watch where this gets placed to
 		paletteTT = new JPanel();
-		paletteL = new JPanel(null);
+		paletteL = new JPanel();
 		
 		
 		
@@ -159,7 +159,8 @@ public class drawing extends JFrame implements ActionListener {
 		//paletteTT.setLayout(new GridLayout(1,1));
 		//paletteL.setLayout(null);
 		 palette.setLayout(new BoxLayout(palette, BoxLayout.Y_AXIS));
-		
+		 paletteL.setLayout(null);
+			
 		
 		
 		
@@ -194,7 +195,8 @@ public class drawing extends JFrame implements ActionListener {
 		getContentPane().add(palette, "North");
 
 		// Label inputs in correct position & in middle
-		
+		paletteL.setBackground(new Color(0, 0, 0, 0));
+		paletteL.setOpaque(false);
 		label_inputA  = new JLabel("A");
 		label_inputB  = new JLabel("B");
 		label_inputC  = new JLabel("C");
@@ -203,13 +205,20 @@ public class drawing extends JFrame implements ActionListener {
 		label_inputF  = new JLabel("F");
 		label_outputG = new JLabel("G");
 		
-		label_inputA.setLocation(102, 102);
+	/*	label_inputA.setLocation(102, 102);
 		label_inputB.setLocation(102, 138);
 		label_inputC.setLocation(102, 202);
 		label_inputD.setLocation(102, 238);
 		label_inputE.setLocation(252, 152); 
 		label_inputF.setLocation(252, 188); 
 		label_outputG.setLocation(312, 175); 
+		label_inputA.setLocation(10, 10);
+		label_inputB.setLocation(20, 10);
+		label_inputC.setLocation(10, 10);
+		label_inputD.setLocation(10, 10);
+		label_inputE.setLocation(10, 10); 
+		label_inputF.setLocation(10, 10); 
+		label_outputG.setLocation(10, 10);
 		
 		label_inputA.setSize(10, 10); 
 		label_inputB.setSize(10, 10);  
@@ -227,11 +236,12 @@ public class drawing extends JFrame implements ActionListener {
 		paletteL.add(label_inputF);
 		paletteL.add(label_outputG);
 		
-
+*/
 		
-		getContentPane().add(paletteL, "West");
-
 		
+
+		drawarea = new MyCanvas();
+		printLabels();
 		// Truth Tables
 		DefaultTableModel tTable = new DefaultTableModel(initialGates, ColumnHeadings);
 		truthTable = new JTable(tTable);
@@ -242,28 +252,70 @@ public class drawing extends JFrame implements ActionListener {
 		checkAnswers.addActionListener(this);
 		
 		getContentPane().add(paletteTT, "South");
-
+		
 		// Draw area
-		drawarea = new MyCanvas(); // MyCanvas class
-		getContentPane().add(drawarea, "Center"); // Draw stuff in the centre
+		 // MyCanvas class
+		getContentPane().add((drawarea), "Center"); 
+		// Draw stuff in the centre
+		//getContentPane().add(paletteL);
+		
+	
+		
 		setVisible(true); // visible true for all elements
 
 		// AI
 		AI = new AI();
 
 	}
+	public void printLabels() {
+		label_inputA  = new JLabel("A");
+		label_inputB  = new JLabel("B");
+		label_inputC  = new JLabel("C");
+		label_inputD  = new JLabel("D");
+		label_inputE  = new JLabel("E");
+		label_inputF  = new JLabel("F");
+		label_outputG = new JLabel("G");
+		
+		//label_inputA.setLocation(102, 102);
+		//label_inputB.setLocation(102, 138);
+		//label_inputC.setLocation(102, 202);
+		//label_inputD.setLocation(102, 238);
+		label_inputE.setLocation(252, 152); 
+		label_inputF.setLocation(252, 188); 
+		label_outputG.setLocation(312, 175); 
+		
+		label_inputA.setSize(10, 10); 
+		label_inputB.setSize(10, 10);  
+		label_inputC.setSize(10, 10);   
+		label_inputD.setSize(10, 10);   
+		label_inputE.setSize(10, 10);   
+		label_inputF.setSize(10, 10);   
+		label_outputG.setSize(10, 10);  
+		
+		drawarea.add(label_inputA);
+		drawarea.add(label_inputB);
+		drawarea.add(label_inputC);
+		drawarea.add(label_inputD);
+		drawarea.add(label_inputE);
+		drawarea.add(label_inputF);
+		drawarea.add(label_outputG);
+		
+	}
 
 	public void actionPerformed(ActionEvent ev) {
 
 		if (("Confirm".equals(ev.getActionCommand()))) {
 			cbx_index = cbx_numberOfGates.getSelectedIndex();
+		
 			index = 0;
 			gateIndex = 0;
 			// Random Gate Generation
 			if (cbx_index != 0) {
 				// if gate number is chosen
 				printedGates.clear();
+				
 				repaint();
+				
 
 			} else {
 				{
@@ -346,55 +398,27 @@ public class drawing extends JFrame implements ActionListener {
 	class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
 
 		public MyCanvas() {
-			printLabels();
+			
 			addMouseListener(this);
+			//getContentPane().setBackground(new Color(0,0,0,0));
 			// addMouseMotionListener( this);
-
+			
 			setVisible(true); // Better to set visible than to not
 
 		}
 		
-		public void printLabels() {
-			label_inputA  = new JLabel("A");
-			label_inputB  = new JLabel("B");
-			label_inputC  = new JLabel("C");
-			label_inputD  = new JLabel("D");
-			label_inputE  = new JLabel("E");
-			label_inputF  = new JLabel("F");
-			label_outputG = new JLabel("G");
-			
-			label_inputA.setLocation(102, 102);
-			label_inputB.setLocation(102, 138);
-			label_inputC.setLocation(102, 202);
-			label_inputD.setLocation(102, 238);
-			label_inputE.setLocation(252, 152); 
-			label_inputF.setLocation(252, 188); 
-			label_outputG.setLocation(312, 175); 
-			
-			label_inputA.setSize(10, 10); 
-			label_inputB.setSize(10, 10);  
-			label_inputC.setSize(10, 10);   
-			label_inputD.setSize(10, 10);   
-			label_inputE.setSize(10, 10);   
-			label_inputF.setSize(10, 10);   
-			label_outputG.setSize(10, 10);  
-			
-			paletteL.add(label_inputA);
-			paletteL.add(label_inputB);
-			paletteL.add(label_inputC);
-			paletteL.add(label_inputD);
-			paletteL.add(label_inputE);
-			paletteL.add(label_inputF);
-			paletteL.add(label_outputG);
-		}
+		
 
 		public void updateGates(Graphics gfx) {
 			index = randomGate.nextInt((GatesList.size() + 1) - 1);
 			System.out.println(index);
 			GatesList.get(index).getGate(gfx, translationX, translationY);
 			addPrintedGate();
+			
 			completeTable();
 			gateIndex++;
+			
+			
 		}
 
 		public void addPrintedGate() {
@@ -519,7 +543,9 @@ public class drawing extends JFrame implements ActionListener {
 				updateTwoGates(gfx);
 				updateFinalGate(gfx);
 			}
+			
 			getAll();
+			printLabels();
 		}
 
 		public void update(Graphics gfx) {
