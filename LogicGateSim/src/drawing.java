@@ -15,7 +15,10 @@
 /***************************************************************************************/
 /**************************************IMPORT MODULES***********************************/
 /***************************************************************************************/
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,18 +31,22 @@ public class drawing extends JFrame implements ActionListener {
 	/***************************************************************************************/
 	/************************************** DEFINITIONS **************************************/
 	/***************************************************************************************/
-	JPanel palette, tools, paletteTT;
+	JPanel palette, paletteL, paletteTT;
 
 	JButton confirmNumberOfGates, checkAnswers;
+	
+	JLabel label_inputA, label_inputB, label_inputC, label_inputD, label_inputE, label_inputF, label_outputG;
 
 	JTable truthTable;
 	JScrollPane scrollPane;
-
+	
+	JComboBox<String> cbx_numberOfGates;
+	
 	MyCanvas drawarea;
 
 	Color background = new Color(128, 128, 127);
 
-	JComboBox<String> cbx_numberOfGates;
+
 
 	// Canvas Size
 	int canvasSizeX = 1200;
@@ -140,7 +147,22 @@ public class drawing extends JFrame implements ActionListener {
 		setSize(canvasSizeX, canvasSizeY);
 		palette = new JPanel(); // Watch where this gets placed to
 		paletteTT = new JPanel();
-		palette.setLayout(new GridLayout(2, 3, 5, 5)); // grid layout
+		paletteL = new JPanel(null);
+		
+		
+		
+		
+		// 3 rows, 1 column
+		//palette.setLayout(new GridLayout(1,1));
+		
+		
+		//paletteTT.setLayout(new GridLayout(1,1));
+		//paletteL.setLayout(null);
+		 palette.setLayout(new BoxLayout(palette, BoxLayout.Y_AXIS));
+		
+		
+		
+		
 		setTitle("Logic Gates");
 
 		// drawTruthTable();
@@ -171,8 +193,46 @@ public class drawing extends JFrame implements ActionListener {
 		// Gate buttons on top
 		getContentPane().add(palette, "North");
 
-		// Truth Tables
+		// Label inputs in correct position & in middle
+		
+		label_inputA  = new JLabel("A");
+		label_inputB  = new JLabel("B");
+		label_inputC  = new JLabel("C");
+		label_inputD  = new JLabel("D");
+		label_inputE  = new JLabel("E");
+		label_inputF  = new JLabel("F");
+		label_outputG = new JLabel("G");
+		
+		label_inputA.setLocation(102, 102);
+		label_inputB.setLocation(102, 138);
+		label_inputC.setLocation(102, 202);
+		label_inputD.setLocation(102, 238);
+		label_inputE.setLocation(252, 152); 
+		label_inputF.setLocation(252, 188); 
+		label_outputG.setLocation(312, 175); 
+		
+		label_inputA.setSize(10, 10); 
+		label_inputB.setSize(10, 10);  
+		label_inputC.setSize(10, 10);   
+		label_inputD.setSize(10, 10);   
+		label_inputE.setSize(10, 10);   
+		label_inputF.setSize(10, 10);   
+		label_outputG.setSize(10, 10);  
+		
+		paletteL.add(label_inputA);
+		paletteL.add(label_inputB);
+		paletteL.add(label_inputC);
+		paletteL.add(label_inputD);
+		paletteL.add(label_inputE);
+		paletteL.add(label_inputF);
+		paletteL.add(label_outputG);
+		
 
+		
+		getContentPane().add(paletteL, "West");
+
+		
+		// Truth Tables
 		DefaultTableModel tTable = new DefaultTableModel(initialGates, ColumnHeadings);
 		truthTable = new JTable(tTable);
 		// paletteTT.add(truthTable);
@@ -198,10 +258,10 @@ public class drawing extends JFrame implements ActionListener {
 		if (("Confirm".equals(ev.getActionCommand()))) {
 			cbx_index = cbx_numberOfGates.getSelectedIndex();
 			index = 0;
+			gateIndex = 0;
 			// Random Gate Generation
 			if (cbx_index != 0) {
 				// if gate number is chosen
-				gateIndex = 0;
 				printedGates.clear();
 				repaint();
 
@@ -286,11 +346,46 @@ public class drawing extends JFrame implements ActionListener {
 	class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
 
 		public MyCanvas() {
+			printLabels();
 			addMouseListener(this);
 			// addMouseMotionListener( this);
 
 			setVisible(true); // Better to set visible than to not
 
+		}
+		
+		public void printLabels() {
+			label_inputA  = new JLabel("A");
+			label_inputB  = new JLabel("B");
+			label_inputC  = new JLabel("C");
+			label_inputD  = new JLabel("D");
+			label_inputE  = new JLabel("E");
+			label_inputF  = new JLabel("F");
+			label_outputG = new JLabel("G");
+			
+			label_inputA.setLocation(102, 102);
+			label_inputB.setLocation(102, 138);
+			label_inputC.setLocation(102, 202);
+			label_inputD.setLocation(102, 238);
+			label_inputE.setLocation(252, 152); 
+			label_inputF.setLocation(252, 188); 
+			label_outputG.setLocation(312, 175); 
+			
+			label_inputA.setSize(10, 10); 
+			label_inputB.setSize(10, 10);  
+			label_inputC.setSize(10, 10);   
+			label_inputD.setSize(10, 10);   
+			label_inputE.setSize(10, 10);   
+			label_inputF.setSize(10, 10);   
+			label_outputG.setSize(10, 10);  
+			
+			paletteL.add(label_inputA);
+			paletteL.add(label_inputB);
+			paletteL.add(label_inputC);
+			paletteL.add(label_inputD);
+			paletteL.add(label_inputE);
+			paletteL.add(label_inputF);
+			paletteL.add(label_outputG);
 		}
 
 		public void updateGates(Graphics gfx) {
