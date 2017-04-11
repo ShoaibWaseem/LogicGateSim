@@ -1,10 +1,11 @@
-import java.awt.*; 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JFrame;
+
 
 
 @SuppressWarnings("serial")
 public class Gates extends JFrame {
-	JLabel label_inputA, label_inputB, label_inputC, label_inputD, label_inputE, label_inputF, label_outputG;
 	//NOR.getGate(gfx, 100, 100);
 	
 	int gateID;
@@ -29,8 +30,6 @@ public class Gates extends JFrame {
 		else if(gateID == 5){
 			paintNAND(Gate ,translatex, translatey);
 		}
-			
-		
 	}
 	
 	
@@ -108,37 +107,4 @@ public class Gates extends JFrame {
 			OR.drawLine(107 + translatex, 138+translatey, 88 + translatex, 138 + translatey); 			//input B
 			OR.drawLine(150 +translatex, 125+translatey, 162 + translatex, 125 + translatey);			//output OR
 		}
-		
-		public void paintLabels(Graphics label){
-			label_inputA  = new JLabel("A");
-			label_inputB  = new JLabel("B");
-			label_inputC  = new JLabel("C");
-			label_inputD  = new JLabel("D");
-			label_inputE  = new JLabel("E");
-			label_inputF  = new JLabel("F");
-			label_outputG = new JLabel("G");
-			
-			label_inputA.setLocation(102, 102);
-			label_inputB.setLocation(102, 138);
-			label_inputC.setLocation(102, 202);
-			label_inputD.setLocation(102, 238);
-			label_inputE.setLocation(252, 152); 
-			label_inputF.setLocation(252, 188); 
-			label_outputG.setLocation(312, 175); 
-			
-			label_inputA.setSize(10, 10); 
-			label_inputB.setSize(10, 10);  
-			label_inputC.setSize(10, 10);   
-			label_inputD.setSize(10, 10);   
-			label_inputE.setSize(10, 10);   
-			label_inputF.setSize(10, 10);   
-			label_outputG.setSize(10, 10); 
-			
-			
-		}
-		
-		
-
-	
-
 }

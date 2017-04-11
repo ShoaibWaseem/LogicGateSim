@@ -3,8 +3,8 @@
  * Author: 			Shoaib Waseem
  * Student Code:	w13013878
  * University:		Northumbria University
- * Version:			Version5
- * Date:			3rd April 2017 
+ * Version:			Version6
+ * Date:			11th April 2017 
  * 
  * 
  * 
@@ -16,14 +16,24 @@
 /**************************************IMPORT MODULES***********************************/
 /***************************************************************************************/
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import javax.swing.*;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
@@ -31,11 +41,9 @@ public class drawing extends JFrame implements ActionListener {
 	/***************************************************************************************/
 	/************************************** DEFINITIONS **************************************/
 	/***************************************************************************************/
-	JPanel palette, paletteL, paletteTT;
+	JPanel palette, paletteTT;
 
-	JButton confirmNumberOfGates, checkAnswers;
-	
-	JLabel label_inputA, label_inputB, label_inputC, label_inputD, label_inputE, label_inputF, label_outputG;
+	JButton confirmNumberOfGates, checkAnswers, bHelpSheet;
 
 	JTable truthTable;
 	JScrollPane scrollPane;
@@ -46,12 +54,9 @@ public class drawing extends JFrame implements ActionListener {
 
 	Color background = new Color(128, 128, 127);
 
-
-
 	// Canvas Size
 	int canvasSizeX = 1200;
 	int canvasSizeY = 800;
-
 
 	// coordinate translation for multiple gates
 	int translationX;
@@ -147,23 +152,8 @@ public class drawing extends JFrame implements ActionListener {
 		setSize(canvasSizeX, canvasSizeY);
 		palette = new JPanel(); // Watch where this gets placed to
 		paletteTT = new JPanel();
-		paletteL = new JPanel();
 		
-		
-		
-		
-		// 3 rows, 1 column
-		//palette.setLayout(new GridLayout(1,1));
-		
-		
-		//paletteTT.setLayout(new GridLayout(1,1));
-		//paletteL.setLayout(null);
-		 palette.setLayout(new BoxLayout(palette, BoxLayout.Y_AXIS));
-		 paletteL.setLayout(null);
-			
-		
-		
-		
+		palette.setLayout(new BoxLayout(palette, BoxLayout.Y_AXIS));
 		setTitle("Logic Gates");
 
 		// drawTruthTable();
@@ -190,133 +180,70 @@ public class drawing extends JFrame implements ActionListener {
 		// Assign button to confirm number of logic gates
 		palette.add(confirmNumberOfGates);
 		confirmNumberOfGates.addActionListener(this);
+		
+		bHelpSheet = new JButton("Help Sheet");
+		palette.add(bHelpSheet, "West");
+		bHelpSheet.addActionListener(this);
 
 		// Gate buttons on top
 		getContentPane().add(palette, "North");
 
-		// Label inputs in correct position & in middle
-		paletteL.setBackground(new Color(0, 0, 0, 0));
-		paletteL.setOpaque(false);
-		label_inputA  = new JLabel("A");
-		label_inputB  = new JLabel("B");
-		label_inputC  = new JLabel("C");
-		label_inputD  = new JLabel("D");
-		label_inputE  = new JLabel("E");
-		label_inputF  = new JLabel("F");
-		label_outputG = new JLabel("G");
-		
-	/*	label_inputA.setLocation(102, 102);
-		label_inputB.setLocation(102, 138);
-		label_inputC.setLocation(102, 202);
-		label_inputD.setLocation(102, 238);
-		label_inputE.setLocation(252, 152); 
-		label_inputF.setLocation(252, 188); 
-		label_outputG.setLocation(312, 175); 
-		label_inputA.setLocation(10, 10);
-		label_inputB.setLocation(20, 10);
-		label_inputC.setLocation(10, 10);
-		label_inputD.setLocation(10, 10);
-		label_inputE.setLocation(10, 10); 
-		label_inputF.setLocation(10, 10); 
-		label_outputG.setLocation(10, 10);
-		
-		label_inputA.setSize(10, 10); 
-		label_inputB.setSize(10, 10);  
-		label_inputC.setSize(10, 10);   
-		label_inputD.setSize(10, 10);   
-		label_inputE.setSize(10, 10);   
-		label_inputF.setSize(10, 10);   
-		label_outputG.setSize(10, 10);  
-		
-		paletteL.add(label_inputA);
-		paletteL.add(label_inputB);
-		paletteL.add(label_inputC);
-		paletteL.add(label_inputD);
-		paletteL.add(label_inputE);
-		paletteL.add(label_inputF);
-		paletteL.add(label_outputG);
-		
-*/
-		
-		
-
 		drawarea = new MyCanvas();
-		printLabels();
 		// Truth Tables
 		DefaultTableModel tTable = new DefaultTableModel(initialGates, ColumnHeadings);
 		truthTable = new JTable(tTable);
-		// paletteTT.add(truthTable);
 		paletteTT.add(new JScrollPane(truthTable));
 		
 		paletteTT.add(checkAnswers);
 		checkAnswers.addActionListener(this);
-		
 		getContentPane().add(paletteTT, "South");
-		
-		// Draw area
-		 // MyCanvas class
 		getContentPane().add((drawarea), "Center"); 
-		// Draw stuff in the centre
-		//getContentPane().add(paletteL);
-		
-	
-		
 		setVisible(true); // visible true for all elements
+		setResizable(false);
 
 		// AI
 		AI = new AI();
 
 	}
-	public void printLabels() {
-		label_inputA  = new JLabel("A");
-		label_inputB  = new JLabel("B");
-		label_inputC  = new JLabel("C");
-		label_inputD  = new JLabel("D");
-		label_inputE  = new JLabel("E");
-		label_inputF  = new JLabel("F");
-		label_outputG = new JLabel("G");
+	
+	public void helpSheetWindow() {
+		JFrame helpsheet = new JFrame("Help Sheet - Logic Gate System");
+		JPanel paletteHS = new JPanel();
 		
-		//label_inputA.setLocation(102, 102);
-		//label_inputB.setLocation(102, 138);
-		//label_inputC.setLocation(102, 202);
-		//label_inputD.setLocation(102, 238);
-		label_inputE.setLocation(252, 152); 
-		label_inputF.setLocation(252, 188); 
-		label_outputG.setLocation(312, 175); 
+		helpsheet.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		label_inputA.setSize(10, 10); 
-		label_inputB.setSize(10, 10);  
-		label_inputC.setSize(10, 10);   
-		label_inputD.setSize(10, 10);   
-		label_inputE.setSize(10, 10);   
-		label_inputF.setSize(10, 10);   
-		label_outputG.setSize(10, 10);  
+		paletteHS.setLayout(new BoxLayout(paletteHS, BoxLayout.Y_AXIS));
+		paletteHS.setOpaque(true);
 		
-		drawarea.add(label_inputA);
-		drawarea.add(label_inputB);
-		drawarea.add(label_inputC);
-		drawarea.add(label_inputD);
-		drawarea.add(label_inputE);
-		drawarea.add(label_inputF);
-		drawarea.add(label_outputG);
+		
+		
+		helpsheet.getContentPane().add(paletteHS);
+		helpsheet.pack();
+		helpsheet.setLocationByPlatform(true);
+		helpsheet.setVisible(true);
+		helpsheet.setResizable(false);
+		
+
+		
 		
 	}
 
 	public void actionPerformed(ActionEvent ev) {
-
+		
+		if(("Help Sheet".equals(ev.getActionCommand()))) {
+			helpSheetWindow();
+		}
+		
+		
 		if (("Confirm".equals(ev.getActionCommand()))) {
 			cbx_index = cbx_numberOfGates.getSelectedIndex();
-		
 			index = 0;
 			gateIndex = 0;
 			// Random Gate Generation
 			if (cbx_index != 0) {
 				// if gate number is chosen
 				printedGates.clear();
-				
 				repaint();
-				
-
 			} else {
 				{
 					JOptionPane.showMessageDialog(null, "Please select a logic gate first");
@@ -332,42 +259,21 @@ public class drawing extends JFrame implements ActionListener {
 			DefaultTableModel dtm = (DefaultTableModel) truthTable.getModel();
 			Object[][] userAnswers = new Object[rowCount][colCount];
 			boolean[] correctAnswers = new boolean[112];
-			boolean sillycheck;
+			boolean correct;
 			
 			for(int i = 0; i < rowCount; i++) {
 				for(int j = 0; j < colCount; j++) {
 					userAnswers[i][j] = dtm.getValueAt(i, j);
-					System.out.println("Row: " + i + " Column: " + j + " Value: " + userAnswers[i][j]);
 					
-					sillycheck = userAnswers[i][j].equals(completeGates[i][j]);
-					System.out.println(sillycheck);
-					if(sillycheck) {
+					correct = userAnswers[i][j].equals(completeGates[i][j]);
+					if(correct) {
 						correctAnswers[arrayindex] = true;
 					} else {
 						correctAnswers[arrayindex] = false;
 					}
 					arrayindex++;
 				}
-				
 			}
-			
-			
-
-			/*for (int col = 4; col < 7; col++) {
-				System.out.println("Column: " + col);
-				for (int x = 0; x < 16; x++) {
-					blah = userAnswers[x][col].equals(completeGates[x][col]);
-					if(userAnswers[x][col].equals(completeGates[x][col])) {
-						correctAnswers[arrayindex] = true;
-					} else {
-						correctAnswers[arrayindex] = false;
-					}
-				}
-			}		*/	
-			System.out.println(Arrays.toString(correctAnswers));
-
-			
-			
 			//was needed to work. Would rather not use a local variable for no reason
 			boolean correctAnswer = Arrays.asList(correctAnswers).contains(false);
 			
@@ -377,9 +283,7 @@ public class drawing extends JFrame implements ActionListener {
 			else if (correctAnswer == true){
 				JOptionPane.showMessageDialog(null, "Congratulations! You are correct!");
 			}
-
 		}
-		
 	}
 	
 
@@ -395,30 +299,19 @@ public class drawing extends JFrame implements ActionListener {
 	 * CANVAS CLASS
 	 *************************************/
 	/**************************************************************************************/
-	class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
+	class MyCanvas extends JPanel implements MouseListener {
 
-		public MyCanvas() {
-			
-			addMouseListener(this);
-			//getContentPane().setBackground(new Color(0,0,0,0));
-			// addMouseMotionListener( this);
-			
+		public MyCanvas() {	
+			addMouseListener(this);			
 			setVisible(true); // Better to set visible than to not
-
 		}
 		
-		
-
 		public void updateGates(Graphics gfx) {
 			index = randomGate.nextInt((GatesList.size() + 1) - 1);
-			System.out.println(index);
 			GatesList.get(index).getGate(gfx, translationX, translationY);
 			addPrintedGate();
-			
 			completeTable();
 			gateIndex++;
-			
-			
 		}
 
 		public void addPrintedGate() {
@@ -454,6 +347,29 @@ public class drawing extends JFrame implements ActionListener {
 			}
 		}
 		
+		public void paintLabels(Graphics label){
+			label.drawString("A", 477, 112);
+			label.drawString("B", 477, 143);
+			label.drawString("C", 477, 212);
+			label.drawString("D", 477, 243);
+			label.drawString("E", 627, 162);
+			label.drawString("F", 627, 193);
+			label.drawString("G", 712, 175);
+		}
+		
+		public void printSingleLabels(Graphics label) {
+			label.drawString("A", 477, 112);
+			label.drawString("B", 477, 143);
+			label.drawString("C", 627, 162);
+		}
+		
+		public void drawConnections (Graphics lines) {			
+			lines.drawLine(562, 125, 637, 125);
+			lines.drawLine(637, 125, 637, 162);
+			lines.drawLine(562, 225, 637, 225);
+			lines.drawLine(637, 225, 637, 188);
+		}
+		
 		public void logicSolver() {
 
 			int ttRows = 16;
@@ -472,19 +388,11 @@ public class drawing extends JFrame implements ActionListener {
 				columnB = 3;
 				outputColumn = 5;
 			}
-
 			for (int j = 0; j < ttRows; j++) {
-				System.out.println("Pass Number " + j);
-				System.out.println(currentGate);
-
 				inputA = (boolean) completeGates[j][columnA];
-				System.out.println("input A: " + inputA);
 				inputB = (boolean) completeGates[j][columnB];
-				System.out.println("input B: " + inputB);
-
 				output = AI.gateOutput(inputA, inputB, currentGate);
 				completeGates[j][outputColumn] = output;
-				
 				truthTable.repaint();
 			}
 		}
@@ -500,6 +408,7 @@ public class drawing extends JFrame implements ActionListener {
 			translationX = translationX + 150;
 			translationY = translationY - 150;
 			updateGates(gfx);
+
 		}
 
 		public void updateTwoGates(Graphics gfx) {
@@ -521,13 +430,6 @@ public class drawing extends JFrame implements ActionListener {
 			translationY = translationY - (100 * 3);
 		}
 
-		// for testing array list printedGates
-		public void getAll() {
-			for (String printed : printedGates) {
-				System.out.println(printed);
-			}
-		}
-
 		public void paint(Graphics gfx) {
 			gfx.setColor(currentColour);
 			translationX = 400;
@@ -535,23 +437,21 @@ public class drawing extends JFrame implements ActionListener {
 			printedGates.clear();
 
 			if (cbx_index == 1) {
-
 				updateSingleGate(gfx);
+				printSingleLabels(gfx);
 			}
 			else if (cbx_index == 2) {
 
 				updateTwoGates(gfx);
 				updateFinalGate(gfx);
+				paintLabels(gfx);
+				drawConnections(gfx);
 			}
-			
-			getAll();
-			printLabels();
 		}
 
 		public void update(Graphics gfx) {
 			super.paint(gfx);
 		}
-
 		// All of this needs to be enabled
 		public void mouseReleased(MouseEvent e) {
 		}
