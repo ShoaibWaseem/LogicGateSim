@@ -3,11 +3,9 @@
  * Author: 			Shoaib Waseem
  * Student Code:	w13013878
  * University:		Northumbria University
- * Version:			Version6
- * Date:			11th April 2017 
- * 
- * 
- * 
+ * Version:			Version7
+ * Date:			18th April 2017 
+ *
  * 
  * 
  */
@@ -20,7 +18,6 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +36,7 @@ import javax.swing.table.DefaultTableModel;
 @SuppressWarnings("serial")
 public class drawing extends JFrame implements ActionListener {
 	/***************************************************************************************/
-	/************************************** DEFINITIONS **************************************/
+	/************************************** DEFINITIONS ************************************/
 	/***************************************************************************************/
 	JPanel palette, paletteTT;
 
@@ -80,6 +77,9 @@ public class drawing extends JFrame implements ActionListener {
 
 	// AI
 	AI AI;
+	
+	//Help Sheet
+	HelpSheet HS;
 
 	// List of printable Gates
 	ArrayList<Gates> GatesList = new ArrayList<Gates>();
@@ -135,10 +135,7 @@ public class drawing extends JFrame implements ActionListener {
 			{ true, true, true, false, false, false, false },
 			{ true, true, true, true, false, false, false }, 
 		};
-	
-	
-	
-	
+
 	static boolean inputA;
 	static boolean inputB;
 	static String currentGate;
@@ -203,35 +200,14 @@ public class drawing extends JFrame implements ActionListener {
 
 		// AI
 		AI = new AI();
-
-	}
-	
-	public void helpSheetWindow() {
-		JFrame helpsheet = new JFrame("Help Sheet - Logic Gate System");
-		JPanel paletteHS = new JPanel();
-		
-		helpsheet.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		paletteHS.setLayout(new BoxLayout(paletteHS, BoxLayout.Y_AXIS));
-		paletteHS.setOpaque(true);
-		
-		
-		
-		helpsheet.getContentPane().add(paletteHS);
-		helpsheet.pack();
-		helpsheet.setLocationByPlatform(true);
-		helpsheet.setVisible(true);
-		helpsheet.setResizable(false);
-		
-
-		
 		
 	}
+
 
 	public void actionPerformed(ActionEvent ev) {
 		
 		if(("Help Sheet".equals(ev.getActionCommand()))) {
-			helpSheetWindow();
+			new HelpSheet();
 		}
 		
 		
@@ -239,10 +215,11 @@ public class drawing extends JFrame implements ActionListener {
 			cbx_index = cbx_numberOfGates.getSelectedIndex();
 			index = 0;
 			gateIndex = 0;
+			printedGates.clear();
 			// Random Gate Generation
 			if (cbx_index != 0) {
 				// if gate number is chosen
-				printedGates.clear();
+				
 				repaint();
 			} else {
 				{
@@ -299,15 +276,16 @@ public class drawing extends JFrame implements ActionListener {
 	 * CANVAS CLASS
 	 *************************************/
 	/**************************************************************************************/
-	class MyCanvas extends JPanel implements MouseListener {
+	class MyCanvas extends JPanel {
 
 		public MyCanvas() {	
-			addMouseListener(this);			
+				
 			setVisible(true); // Better to set visible than to not
 		}
 		
 		public void updateGates(Graphics gfx) {
 			index = randomGate.nextInt((GatesList.size() + 1) - 1);
+			//print statement
 			GatesList.get(index).getGate(gfx, translationX, translationY);
 			addPrintedGate();
 			completeTable();
@@ -327,7 +305,7 @@ public class drawing extends JFrame implements ActionListener {
 				printedGates.add("NAND");
 			}
 		}
-
+		
 		public void completeTable() {
 			if (printedGates.get(gateIndex) == "XOR") {
 				currentGate = "XOR";
@@ -360,7 +338,7 @@ public class drawing extends JFrame implements ActionListener {
 		public void printSingleLabels(Graphics label) {
 			label.drawString("A", 477, 112);
 			label.drawString("B", 477, 143);
-			label.drawString("C", 627, 162);
+			label.drawString("C", 565, 132);
 		}
 		
 		public void drawConnections (Graphics lines) {			
@@ -398,8 +376,8 @@ public class drawing extends JFrame implements ActionListener {
 		}
 
 		public void updateSingleGate(Graphics gfx) {
-			translationX = translationX + 270;
-			translationY = translationY + 75;
+			//translationX = translationX + 270;
+			//translationY = translationY + 75;
 			updateGates(gfx);
 		}
 
@@ -408,6 +386,7 @@ public class drawing extends JFrame implements ActionListener {
 			translationX = translationX + 150;
 			translationY = translationY - 150;
 			updateGates(gfx);
+			
 
 		}
 
@@ -429,6 +408,8 @@ public class drawing extends JFrame implements ActionListener {
 			translationX = translationX + 150;
 			translationY = translationY - (100 * 3);
 		}
+		
+
 
 		public void paint(Graphics gfx) {
 			gfx.setColor(currentColour);
@@ -441,12 +422,12 @@ public class drawing extends JFrame implements ActionListener {
 				printSingleLabels(gfx);
 			}
 			else if (cbx_index == 2) {
-
 				updateTwoGates(gfx);
 				updateFinalGate(gfx);
 				paintLabels(gfx);
 				drawConnections(gfx);
 			}
+			gateIndex = 0;
 		}
 
 		public void update(Graphics gfx) {
@@ -463,6 +444,7 @@ public class drawing extends JFrame implements ActionListener {
 		}
 
 		public void mouseClicked(MouseEvent e) {
+			gateIndex = 0;
 		}
 
 		public void mouseEntered(MouseEvent e) {
