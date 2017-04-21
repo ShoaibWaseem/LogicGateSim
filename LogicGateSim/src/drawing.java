@@ -135,6 +135,10 @@ public class drawing extends JFrame implements ActionListener {
 			{ true, true, true, false, false, false, false },
 			{ true, true, true, true, false, false, false }, 
 		};
+	
+	Object[][] completeGatesAnswers = new Object[16][7];
+	
+	
 
 	static boolean inputA;
 	static boolean inputB;
@@ -142,7 +146,7 @@ public class drawing extends JFrame implements ActionListener {
 
 	public static boolean output;
 
-	public static int gateIndex;
+	public static int gateIndex = 0;
 
 	public drawing() {
 
@@ -251,8 +255,11 @@ public class drawing extends JFrame implements ActionListener {
 					arrayindex++;
 				}
 			}
+			System.out.println(Arrays.deepToString(completeGates));
+			System.out.println(Arrays.toString(correctAnswers));
 			//was needed to work. Would rather not use a local variable for no reason
 			boolean correctAnswer = Arrays.asList(correctAnswers).contains(false);
+			System.out.println(correctAnswer);
 			
 			if (correctAnswer == false) {
 				JOptionPane.showMessageDialog(null, "WRONG!");
@@ -289,7 +296,7 @@ public class drawing extends JFrame implements ActionListener {
 			GatesList.get(index).getGate(gfx, translationX, translationY);
 			addPrintedGate();
 			completeTable();
-			gateIndex++;
+			
 		}
 
 		public void addPrintedGate() {
@@ -338,7 +345,7 @@ public class drawing extends JFrame implements ActionListener {
 		public void printSingleLabels(Graphics label) {
 			label.drawString("A", 477, 112);
 			label.drawString("B", 477, 143);
-			label.drawString("C", 565, 132);
+			label.drawString("E", 565, 132);
 		}
 		
 		public void drawConnections (Graphics lines) {			
@@ -370,7 +377,15 @@ public class drawing extends JFrame implements ActionListener {
 				inputA = (boolean) completeGates[j][columnA];
 				inputB = (boolean) completeGates[j][columnB];
 				output = AI.gateOutput(inputA, inputB, currentGate);
+				System.out.println(output);
+				
 				completeGates[j][outputColumn] = output;
+				
+				/*if(output == true) {
+					completeGates[j][outputColumn] = true;
+				} else {
+					completeGates[j][outputColumn] = false;
+				}*/
 				truthTable.repaint();
 			}
 		}
@@ -395,6 +410,7 @@ public class drawing extends JFrame implements ActionListener {
 			for (int i = 0; i < 2; i++) {
 				updateGates(gfx);
 				translationY = translationY + 100;
+				gateIndex++;
 			}
 		}
 
