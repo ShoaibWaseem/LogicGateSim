@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
@@ -95,27 +96,7 @@ public class drawing extends JFrame implements ActionListener {
 	// Column Names
 
 	// test save
-	String[] ColumnHeadings = { "A", "B", "C", "D", "E", "F", "G" };
 
-
-	Object[][] initialGates = { 
-			{ false, false, false, false, false, false, false },
-			{ false, false, false, true, false, false, false }, 
-			{ false, false, true, false, false, false, false },
-			{ false, false, true, true, false, false, false }, 
-			{ false, true, false, false, false, false, false },
-			{ false, true, false, true, false, false, false }, 
-			{ false, true, true, false, false, false, false },
-			{ false, true, true, true, false, false, false }, 
-			{ true, false, false, false, false, false, false },
-			{ true, false, false, true, false, false, false }, 
-			{ true, false, true, false, false, false, false },
-			{ true, false, true, true, false, false, false }, 
-			{ true, true, false, false, false, false, false },
-			{ true, true, false, true, false, false, false }, 
-			{ true, true, true, false, false, false, false },
-			{ true, true, true, true, false, false, false }
-		};
 	// 7 Gates Array
 	Object[][] completeGates = { 
 			{ false, false, false, false, false, false, false },
@@ -135,8 +116,6 @@ public class drawing extends JFrame implements ActionListener {
 			{ true, true, true, false, false, false, false },
 			{ true, true, true, true, false, false, false }, 
 		};
-	
-	Object[][] completeGatesAnswers = new Object[16][7];
 	
 	
 
@@ -191,8 +170,10 @@ public class drawing extends JFrame implements ActionListener {
 
 		drawarea = new MyCanvas();
 		// Truth Tables
-		DefaultTableModel tTable = new DefaultTableModel(initialGates, ColumnHeadings);
-		truthTable = new JTable(tTable);
+		//DefaultTableModel tTable = new DefaultTableModel(initialGates, ColumnHeadings);
+		
+		
+		truthTable = new JTable(new truthTableModel());
 		paletteTT.add(new JScrollPane(truthTable));
 		
 		paletteTT.add(checkAnswers);
@@ -206,6 +187,9 @@ public class drawing extends JFrame implements ActionListener {
 		AI = new AI();
 		
 	}
+	
+	
+
 
 
 	public void actionPerformed(ActionEvent ev) {
@@ -471,5 +455,63 @@ public class drawing extends JFrame implements ActionListener {
 
 		public void mouseMoved(MouseEvent e) {
 		}
+	}
+	
+	/***************************************************************************************/
+	/**************************************
+	 * Table CLASS
+	 *************************************/
+	/**************************************************************************************/
+	class truthTableModel extends AbstractTableModel {
+		String[] ColumnHeadings = { "Input A", "Input B", "Input C", "Input D", "Input E", "Input F", "Output G" };
+
+		Object[][] initialGates = { 
+				{ false, false, false, false, false, false, false },
+				{ false, false, false, true, false, false, false }, 
+				{ false, false, true, false, false, false, false },
+				{ false, false, true, true, false, false, false }, 
+				{ false, true, false, false, false, false, false },
+				{ false, true, false, true, false, false, false }, 
+				{ false, true, true, false, false, false, false },
+				{ false, true, true, true, false, false, false }, 
+				{ true, false, false, false, false, false, false },
+				{ true, false, false, true, false, false, false }, 
+				{ true, false, true, false, false, false, false },
+				{ true, false, true, true, false, false, false }, 
+				{ true, true, false, false, false, false, false },
+				{ true, true, false, true, false, false, false }, 
+				{ true, true, true, false, false, false, false },
+				{ true, true, true, true, false, false, false }
+			};
+		
+		public int getColumnCount() {
+			return ColumnHeadings.length;
+		}
+
+		public int getRowCount() {
+			return initialGates.length;
+		}
+
+		public String getColumnName(int col) {
+			return ColumnHeadings[col];
+		}
+
+		public Object getValueAt(int row, int col) {
+			return initialGates[row][col];
+		}
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public Class getColumnClass(int columnIndex) {
+			return Boolean.class;
+		}
+
+		public boolean isCellEditable(int c) {
+			if (c < 4) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+
 	}
 }

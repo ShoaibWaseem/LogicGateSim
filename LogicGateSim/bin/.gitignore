@@ -1,12 +1,2 @@
-/AI.class
-/Gates.class
-/drawing$MyCanvas.class
-/drawing.class
-/drawingAND.class
-/drawingNAND.class
-/drawingNOR.class
-/drawingOR.class
-/drawingXOR.class
-/HelpSheet.class
-/HelpSheet$MyCanvas.class
-/HelpSheet$MyHSCanvas.class
+/drawing$1.class
+/drawing$truthTableModel.class
