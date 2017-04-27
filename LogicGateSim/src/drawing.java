@@ -3,8 +3,8 @@
  * Author: 			Shoaib Waseem
  * Student Code:	w13013878
  * University:		Northumbria University
- * Version:			Version7
- * Date:			18th April 2017 
+ * Version:			Version8
+ * Date:			26th April 2017 
  *
  * 
  * 
@@ -32,27 +32,47 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+
+/**
+* Class drawing creates the window and panels with the use of 
+* the swing libraries.
+* Contains 2 inner classes to handle drawing and the
+* interactive truth table using data model. 
+*
+*/
+
 
 @SuppressWarnings("serial")
 public class drawing extends JFrame implements ActionListener {
 	/***************************************************************************************/
 	/************************************** DEFINITIONS ************************************/
 	/***************************************************************************************/
+	
+	//2 panels used to store components to add to the frame
 	JPanel palette, paletteTT;
 
+	//3 buttons, appropriately named.
 	JButton confirmNumberOfGates, checkAnswers, bHelpSheet;
 
+	//table, appropriately named, with a scrollpane for the table
 	JTable truthTable;
 	JScrollPane scrollPane;
 	
+	//combobox used for storing user selections
 	JComboBox<String> cbx_numberOfGates;
 	
+	
+	//instance of innerclass "MyCanvas", used as a drawing area for the AET library
 	MyCanvas drawarea;
 
+	//background colour for the frame(window)
 	Color background = new Color(128, 128, 127);
+	// black line for drawing
+	Color currentColour = new Color(0, 0, 0); 
 
-	// Canvas Size
+	// Canvas Size, x & y dimensions respectively
 	int canvasSizeX = 1200;
 	int canvasSizeY = 800;
 
@@ -60,29 +80,25 @@ public class drawing extends JFrame implements ActionListener {
 	int translationX;
 	int translationY;
 
+	//used for declaring the starting index of the combo box
 	int cbx_index = 0;
+	
+	//index number used for selecting the relevant gate
 	int index = 0;
-
-	Color currentColour = new Color(0, 0, 0); // black line for drawing
-
-	// used for the combo box,
+	
+	//String array used to populate combobox
 	String[] numberOfGates = { "Select No. of Gates", "1", "3" };
 
-	int[] threeGatesList = new int[3];
-
-	// co-ordinates used for 1 gate combo box selection - x, y
-	int[] oneGateCoord = { 300, 400 };
-
-	// rng for random gate
+	//random number generator for random gate - from util library
 	Random randomGate = new Random();
 
-	// AI
+	//instance of separate class AI, named AI
 	AI AI;
 	
 	//Help Sheet
 	HelpSheet HS;
 
-	// List of printable Gates
+	//List of printable Gates, stored of type Gates (Separate class)
 	ArrayList<Gates> GatesList = new ArrayList<Gates>();
 	Gates XOR = new Gates(1);
 	Gates OR = new Gates(2);
@@ -93,11 +109,27 @@ public class drawing extends JFrame implements ActionListener {
 	// List of Printed Gates
 	ArrayList<String> printedGates = new ArrayList<String>();
 
-	// Column Names
-
-	// test save
-
-	// 7 Gates Array
+	// 3 Gates Array, empty truth table for outputs
+	Object[][] initialGates = { 
+			{ false, false, false, false, false, false, false },
+			{ false, false, false, true, false, false, false }, 
+			{ false, false, true, false, false, false, false },
+			{ false, false, true, true, false, false, false }, 
+			{ false, true, false, false, false, false, false },
+			{ false, true, false, true, false, false, false }, 
+			{ false, true, true, false, false, false, false },
+			{ false, true, true, true, false, false, false }, 
+			{ true, false, false, false, false, false, false },
+			{ true, false, false, true, false, false, false }, 
+			{ true, false, true, false, false, false, false },
+			{ true, false, true, true, false, false, false }, 
+			{ true, true, false, false, false, false, false },
+			{ true, true, false, true, false, false, false }, 
+			{ true, true, true, false, false, false, false },
+			{ true, true, true, true, false, false, false }
+		};
+	
+	// uses AI to solve the logic gate system. Answers are stored here
 	Object[][] completeGates = { 
 			{ false, false, false, false, false, false, false },
 			{ false, false, false, true, false, false, false },
@@ -118,9 +150,11 @@ public class drawing extends JFrame implements ActionListener {
 		};
 	
 	
-
+	//takes the inputs to solve the output respectively
 	static boolean inputA;
 	static boolean inputB;
+	
+	//records current gates to know how to solve
 	static String currentGate;
 
 	public static boolean output;
@@ -221,9 +255,9 @@ public class drawing extends JFrame implements ActionListener {
 			int arrayindex = 0;
 			int rowCount = truthTable.getRowCount();
 			int colCount = truthTable.getColumnCount();
-			DefaultTableModel dtm = (DefaultTableModel) truthTable.getModel();
+			TableModel dtm = truthTable.getModel();
 			Object[][] userAnswers = new Object[rowCount][colCount];
-			boolean[] correctAnswers = new boolean[112];
+			Boolean[] correctAnswers = new Boolean[112];
 			boolean correct;
 			
 			for(int i = 0; i < rowCount; i++) {
@@ -241,14 +275,13 @@ public class drawing extends JFrame implements ActionListener {
 			}
 			System.out.println(Arrays.deepToString(completeGates));
 			System.out.println(Arrays.toString(correctAnswers));
-			//was needed to work. Would rather not use a local variable for no reason
-			boolean correctAnswer = Arrays.asList(correctAnswers).contains(false);
-			System.out.println(correctAnswer);
 			
-			if (correctAnswer == false) {
+			System.out.println(Arrays.asList(correctAnswers).contains(false));
+			
+			if (Arrays.asList(correctAnswers).contains(false)) {
 				JOptionPane.showMessageDialog(null, "WRONG!");
 			}
-			else if (correctAnswer == true){
+			else{
 				JOptionPane.showMessageDialog(null, "Congratulations! You are correct!");
 			}
 		}
@@ -464,54 +497,39 @@ public class drawing extends JFrame implements ActionListener {
 	/**************************************************************************************/
 	class truthTableModel extends AbstractTableModel {
 		String[] ColumnHeadings = { "Input A", "Input B", "Input C", "Input D", "Input E", "Input F", "Output G" };
-
-		Object[][] initialGates = { 
-				{ false, false, false, false, false, false, false },
-				{ false, false, false, true, false, false, false }, 
-				{ false, false, true, false, false, false, false },
-				{ false, false, true, true, false, false, false }, 
-				{ false, true, false, false, false, false, false },
-				{ false, true, false, true, false, false, false }, 
-				{ false, true, true, false, false, false, false },
-				{ false, true, true, true, false, false, false }, 
-				{ true, false, false, false, false, false, false },
-				{ true, false, false, true, false, false, false }, 
-				{ true, false, true, false, false, false, false },
-				{ true, false, true, true, false, false, false }, 
-				{ true, true, false, false, false, false, false },
-				{ true, true, false, true, false, false, false }, 
-				{ true, true, true, false, false, false, false },
-				{ true, true, true, true, false, false, false }
-			};
-		
+		@Override
 		public int getColumnCount() {
 			return ColumnHeadings.length;
 		}
-
+		@Override
 		public int getRowCount() {
 			return initialGates.length;
 		}
-
+		@Override
 		public String getColumnName(int col) {
 			return ColumnHeadings[col];
 		}
-
+		@Override
 		public Object getValueAt(int row, int col) {
 			return initialGates[row][col];
 		}
-
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Class getColumnClass(int columnIndex) {
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
 			return Boolean.class;
 		}
-
-		public boolean isCellEditable(int c) {
-			if (c < 4) {
+		
+		@Override
+		public boolean isCellEditable(int row, int col) {
+			if (col < 4) {
 				return false;
 			} else {
 				return true;
 			}
 		}
-
+		@Override
+		public void setValueAt(Object value, int row, int col) {
+            initialGates[row][col] = value;
+            fireTableCellUpdated(row, col);
+        }
 	}
 }
