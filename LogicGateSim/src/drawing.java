@@ -3,8 +3,8 @@
  * Author: 			Shoaib Waseem
  * Student Code:	w13013878
  * University:		Northumbria University
- * Version:			Version8
- * Date:			26th April 2017 
+ * Version:			Version9
+ * Date:			28th April 2017 
  *
  * 
  * 
@@ -157,22 +157,29 @@ public class drawing extends JFrame implements ActionListener {
 	//records current gates to know how to solve
 	static String currentGate;
 
-	public static boolean output;
+	//output used in AI
+	public boolean output;
 
-	public static int gateIndex = 0;
+	//index number used in rng to choose a gate
+	public int gateIndex = 0;
 
+	//Constructor
 	public drawing() {
 
+		//set Size of canvas
 		setSize(canvasSizeX, canvasSizeY);
-		palette = new JPanel(); // Watch where this gets placed to
+		
+		//2 panels to draw on, one for buttons, one for truth table (TT)
+		palette = new JPanel(); 
 		paletteTT = new JPanel();
 		
+		//set layout to use y axis for adding new components
 		palette.setLayout(new BoxLayout(palette, BoxLayout.Y_AXIS));
+		//Title of window set to Logic Gates
 		setTitle("Logic Gates");
 
-		// drawTruthTable();
 
-		// add gates to arraylist GatesList
+		// add gates to arraylist GatesList, was repeating so used isEmpty
 		if (GatesList.isEmpty()) {
 			GatesList.add(XOR);
 			GatesList.add(OR);
@@ -181,7 +188,7 @@ public class drawing extends JFrame implements ActionListener {
 			GatesList.add(NAND);
 		}
 
-		// Assign components with variables
+		// create 2 buttons for checking answers and confirming combobox selection
 		checkAnswers = new JButton("Check");
 		confirmNumberOfGates = new JButton("Confirm");
 
@@ -189,12 +196,12 @@ public class drawing extends JFrame implements ActionListener {
 		cbx_numberOfGates = new JComboBox<String>(numberOfGates);
 		palette.add(cbx_numberOfGates);
 		cbx_numberOfGates.setSelectedIndex(0);
-		cbx_numberOfGates.addActionListener(this);
 
 		// Assign button to confirm number of logic gates
 		palette.add(confirmNumberOfGates);
 		confirmNumberOfGates.addActionListener(this);
 		
+		// Assign button to open helpsheet
 		bHelpSheet = new JButton("Help Sheet");
 		palette.add(bHelpSheet, "West");
 		bHelpSheet.addActionListener(this);
@@ -203,15 +210,18 @@ public class drawing extends JFrame implements ActionListener {
 		getContentPane().add(palette, "North");
 
 		drawarea = new MyCanvas();
-		// Truth Tables
-		//DefaultTableModel tTable = new DefaultTableModel(initialGates, ColumnHeadings);
-		
-		
+				
+		//create a table using the inner class truthTableModel
 		truthTable = new JTable(new truthTableModel());
+		
+		// add a scrollpane so it is not cut off.
 		paletteTT.add(new JScrollPane(truthTable));
 		
+		//add button to palette
 		paletteTT.add(checkAnswers);
 		checkAnswers.addActionListener(this);
+		
+		//add palettes to the frame
 		getContentPane().add(paletteTT, "South");
 		getContentPane().add((drawarea), "Center"); 
 		setVisible(true); // visible true for all elements
@@ -222,66 +232,90 @@ public class drawing extends JFrame implements ActionListener {
 		
 	}
 	
-	
-
-
-
+	/**
+	 * Receives an action set by the user and acts appropriately based
+	 * on the button 'clicked'
+	 * There are 3 buttons on the page and each button has a function which
+	 * is completed by this method.
+	 *
+	 * @param	ev	Records an action executed by the user
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		
+		/*If the user wishes to use a helpsheet, the helpsheet window is opened
+		 * using the class HelpSheet.java
+		 * This will occur when the user clicks on the help sheet button
+		 */
 		if(("Help Sheet".equals(ev.getActionCommand()))) {
 			new HelpSheet();
 		}
 		
-		
+		/* When the user clicks confirm, the program will generate the 
+		 * appropriate number of logic gates based on the selection.
+		 * If nothing is selected, a message box appears asking the user to
+		 * select a logic gate.
+		 */
 		if (("Confirm".equals(ev.getActionCommand()))) {
+			
+			//get the index number of the combo box
 			cbx_index = cbx_numberOfGates.getSelectedIndex();
 			index = 0;
 			gateIndex = 0;
-			printedGates.clear();
-			// Random Gate Generation
+
+			// Random Gate Generation when a gate number is chosen
 			if (cbx_index != 0) {
-				// if gate number is chosen
 				
+				// remove currently printed gates list.
+				printedGates.clear();
+				
+				//paint onto the draw area
 				repaint();
-			} else {
+			} else { //Tell user to choose a valid number
 				{
 					JOptionPane.showMessageDialog(null, "Please select a logic gate first");
 				}
 			}
 
 		}
-		
+		/* When the user clicks check, the user answers are compared with the AI
+		 * answers and stored in an array. If the array contains a false, the user
+		 * has not completed the truth table successfully.
+		 */
 		if (("Check".equals(ev.getActionCommand()))) {
+			//start inserting boolean from position 0 onwards in array omdex
 			int arrayindex = 0;
+			
+			//accurately get size of the table.
 			int rowCount = truthTable.getRowCount();
 			int colCount = truthTable.getColumnCount();
+			
+			//create a model of the truth table, which takes user answers.
 			TableModel dtm = truthTable.getModel();
+			
+			//store users answers from dtm in a 2D object array (easier to work with)
 			Object[][] userAnswers = new Object[rowCount][colCount];
+			
+			//an array of type ObjectBoolean. Regular boolean works differently (to be looked at why)
 			Boolean[] correctAnswers = new Boolean[112];
-			boolean correct;
 			
 			for(int i = 0; i < rowCount; i++) {
 				for(int j = 0; j < colCount; j++) {
+					
+					//store the table value at (row,column) in the easier to use object array
 					userAnswers[i][j] = dtm.getValueAt(i, j);
 					
-					correct = userAnswers[i][j].equals(completeGates[i][j]);
-					if(correct) {
-						correctAnswers[arrayindex] = true;
-					} else {
-						correctAnswers[arrayindex] = false;
-					}
+					//store the true or false from the compare to see if the user answers == AI answers
+					correctAnswers[arrayindex]  = userAnswers[i][j].equals(completeGates[i][j]);
+					
+					//store value in the next instance of the array.
 					arrayindex++;
 				}
 			}
-			System.out.println(Arrays.deepToString(completeGates));
-			System.out.println(Arrays.toString(correctAnswers));
-			
-			System.out.println(Arrays.asList(correctAnswers).contains(false));
-			
+			//if the correctAnswers array contains a false, user is wrong
 			if (Arrays.asList(correctAnswers).contains(false)) {
 				JOptionPane.showMessageDialog(null, "WRONG!");
 			}
-			else{
+			else { //otherwise the user is correct
 				JOptionPane.showMessageDialog(null, "Congratulations! You are correct!");
 			}
 		}
@@ -289,24 +323,34 @@ public class drawing extends JFrame implements ActionListener {
 	
 
 	/***************************************************************************************/
-	/**************************************MAIN CLASS***************************************/
+	/**************************************MAIN CLASS FOR drawing.Java *********************/
 	/***************************************************************************************/
 	public static void main(String args[]) {
 		new drawing(); // Calling main prog
 	}
 
-	/***************************************************************************************/
-	/**************************************
-	 * CANVAS CLASS
-	 *************************************/
-	/**************************************************************************************/
+	
+	/**
+	* Class MyCanvas.java creates the draw area added to a palette for graphics to draw onto.
+	* The draw area is updated with new logic gates from Gates.java
+	* This also handles AI.java to solve the randomly generated logic gate System. 
+	* This is an innerclass for the class drawing.java
+	*
+	*/
+
 	class MyCanvas extends JPanel {
 
+		
 		public MyCanvas() {	
-				
 			setVisible(true); // Better to set visible than to not
 		}
 		
+		/**
+		 * updates draw area to draw a new set of gates which are randomly 
+		 * generated
+		 *
+		 * @param	gfx	used to draw the gates.
+		 */
 		public void updateGates(Graphics gfx) {
 			index = randomGate.nextInt((GatesList.size() + 1) - 1);
 			//print statement
@@ -316,6 +360,10 @@ public class drawing extends JFrame implements ActionListener {
 			
 		}
 
+		/**
+		 * add a gate to the arraylist printedGates based on the index number set in
+		 * updateGates(gfx)
+		 */
 		public void addPrintedGate() {
 			if (index == 0) {
 				printedGates.add("XOR");
@@ -330,6 +378,10 @@ public class drawing extends JFrame implements ActionListener {
 			}
 		}
 		
+		/**
+		 * based on the gate entered in the printGates arraylist,
+		 * solve the logic. 
+		 */
 		public void completeTable() {
 			if (printedGates.get(gateIndex) == "XOR") {
 				currentGate = "XOR";
