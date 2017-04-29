@@ -323,7 +323,7 @@ public class drawing extends JFrame implements ActionListener {
 	
 
 	/***************************************************************************************/
-	/**************************************MAIN CLASS FOR drawing.Java *********************/
+	/****************************MAIN CLASS FOR DRAWING.JAVA *******************************/
 	/***************************************************************************************/
 	public static void main(String args[]) {
 		new drawing(); // Calling main prog
@@ -363,6 +363,7 @@ public class drawing extends JFrame implements ActionListener {
 		/**
 		 * add a gate to the arraylist printedGates based on the index number set in
 		 * updateGates(gfx)
+		 * 
 		 */
 		public void addPrintedGate() {
 			if (index == 0) {
@@ -401,7 +402,16 @@ public class drawing extends JFrame implements ActionListener {
 			}
 		}
 		
+		/**
+		 * draw/paint the labels for 3 logic gates. Will paint when
+		 * the drawing of the gates are completed.
+		 * 
+		 * @param	label	graphics used to draw
+		 */
+		
 		public void paintLabels(Graphics label){
+			//Syntax
+			//Graphics.drawString(String, x, y)
 			label.drawString("A", 477, 112);
 			label.drawString("B", 477, 143);
 			label.drawString("C", 477, 212);
@@ -411,68 +421,113 @@ public class drawing extends JFrame implements ActionListener {
 			label.drawString("G", 712, 175);
 		}
 		
+		/**
+		 * draw/paint the labels for 1 logic gate. Will paint when
+		 * the drawing of the gates are completed.
+		 * 
+		 * @param	label	graphics used to draw
+		 */
+		
 		public void printSingleLabels(Graphics label) {
+			//Syntax
+			//Graphics.drawString(String, x, y)
 			label.drawString("A", 477, 112);
 			label.drawString("B", 477, 143);
 			label.drawString("E", 565, 132);
 		}
+		/**
+		 * draw/paint the connections between each logic gate
+		 * so the user can follow the inputs/outputs. Only needed
+		 * for 3 gates.
+		 * 
+		 * @param	Lines	graphics used to draw
+		 */
 		
-		public void drawConnections (Graphics lines) {			
+		public void drawConnections (Graphics lines) {
+			//Syntax
+			//Graphics.drawLine(x1, y1, x2, y2)
 			lines.drawLine(562, 125, 637, 125);
 			lines.drawLine(637, 125, 637, 162);
 			lines.drawLine(562, 225, 637, 225);
 			lines.drawLine(637, 225, 637, 188);
 		}
 		
+		/**
+		 * Uses AI.java (A simple rule based System) to 
+		 * solve the randomly generated logic gate system for
+		 * both 1 and 3 gates respectively. The columns to read
+		 * the inputs from are chosen through the gate index 
+		 * number. 
+		 * 
+		 * @param	Lines	graphics used to draw
+		 */		
+		
 		public void logicSolver() {
 
-			int ttRows = 16;
-
-			// if its the final index
+			// if its the final index, default to the final
+			//values
 			int columnA = 4;
 			int columnB = 5;
 			int outputColumn = 6;
 
+			//If its the first drawn gate, the input and out-
+			//put columns are chosen
 			if (gateIndex == 0) {
 				columnA = 0;
 				columnB = 1;
 				outputColumn = 4;
+				
+			//Else If its the second drawn gate, the input and 
+			//output columns are chosen	
 			} else if (gateIndex == 1) {
 				columnA = 2;
 				columnB = 3;
 				outputColumn = 5;
 			}
-			for (int j = 0; j < ttRows; j++) {
+			
+			//for every row in the truth table,
+			//use the defined column values to
+			//solve the logic gate system			
+			for (int j = 0; j < 16; j++) {
 				inputA = (boolean) completeGates[j][columnA];
 				inputB = (boolean) completeGates[j][columnB];
-				output = AI.gateOutput(inputA, inputB, currentGate);
-				System.out.println(output);
-				
+				output = AI.gateOutput(inputA, inputB, currentGate);				
 				completeGates[j][outputColumn] = output;
-				
-				/*if(output == true) {
-					completeGates[j][outputColumn] = true;
-				} else {
-					completeGates[j][outputColumn] = false;
-				}*/
-				truthTable.repaint();
 			}
 		}
+		
+		/**
+		 * Draws a single gate
+		 *  
+		 * @param	gfx	graphics used to draw
+		 */
 
 		public void updateSingleGate(Graphics gfx) {
-			//translationX = translationX + 270;
-			//translationY = translationY + 75;
 			updateGates(gfx);
 		}
+		
+		/**
+		 * Draws the final gate in a 3 logic gate
+		 * System. Sets x & y coordinates to draw 
+		 * the final gate accurately
+		 *  
+		 * @param	gfx	graphics used to draw
+		 */
 
 		public void updateFinalGate(Graphics gfx) {
-
 			translationX = translationX + 150;
 			translationY = translationY - 150;
 			updateGates(gfx);
-			
-
 		}
+		
+		/**
+		 * Draws the first 2 gates in a 3 gate system
+		 * with the same initial x co-ordinate. The
+		 * y-coordinate is translated by 100 for the
+		 * second.
+		 *  
+		 * @param	gfx	graphics used to draw
+		 */
 
 		public void updateTwoGates(Graphics gfx) {
 
@@ -482,19 +537,15 @@ public class drawing extends JFrame implements ActionListener {
 				gateIndex++;
 			}
 		}
-
-		public void updateFourGates(Graphics gfx) {
-
-			for (int i = 0; i < 4; i++) {
-				updateGates(gfx);
-				translationY = translationY + 100;
-			}
-
-			translationX = translationX + 150;
-			translationY = translationY - (100 * 3);
-		}
 		
-
+		/**
+		 * when repaint is called, the canvas is cleared
+		 * and paint() is called. This handles all drawing
+		 * on the draw area. The parameter Graphics is taken
+		 * from the awt.Graphics library.
+		 *  
+		 * @param	gfx	graphics used to draw
+		 */
 
 		public void paint(Graphics gfx) {
 			gfx.setColor(currentColour);
@@ -502,74 +553,114 @@ public class drawing extends JFrame implements ActionListener {
 			translationY = 0;
 			printedGates.clear();
 
+			//if 1 gate is selected in the combo box
 			if (cbx_index == 1) {
+				//paint 1 gate
 				updateSingleGate(gfx);
+				//paint the gate labels
 				printSingleLabels(gfx);
 			}
+			//if 3 gates are selected in the combo box
 			else if (cbx_index == 2) {
+				//paint 2 gates
 				updateTwoGates(gfx);
+				//paint the final gate
 				updateFinalGate(gfx);
+				//paint the gate labels
 				paintLabels(gfx);
+				//paint the lines to connect the gates
 				drawConnections(gfx);
 			}
+			//This needs to be here for the next list of
+			//randomly generated logic gates
 			gateIndex = 0;
 		}
 
-		public void update(Graphics gfx) {
-			super.paint(gfx);
-		}
 		// All of this needs to be enabled
-		public void mouseReleased(MouseEvent e) {
-		}
-
-		public void mouseDragged(MouseEvent e) {
-		}
-
-		public void mousePressed(MouseEvent e) {
-		}
-
-		public void mouseClicked(MouseEvent e) {
-			gateIndex = 0;
-		}
-
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		public void mouseExited(MouseEvent e) {
-		}
-
-		public void mouseMoved(MouseEvent e) {
-		}
+		public void mouseReleased(MouseEvent e) {}
+		public void mouseDragged(MouseEvent e) {}
+		public void mousePressed(MouseEvent e) {}
+		public void mouseClicked(MouseEvent e) {}
+		public void mouseEntered(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {}
+		public void mouseMoved(MouseEvent e) {}
 	}
 	
-	/***************************************************************************************/
-	/**************************************
-	 * Table CLASS
-	 *************************************/
-	/**************************************************************************************/
+	/**
+	* Class truthTableModel.java creates the truth table drawn in the JPanel paletteTT
+	* This is constructs the table based on the override methods from the java
+	* library Swing.Table.AbstractTableModel.
+	* This is an innerclass for the class drawing.java
+	*
+	*/
 	class truthTableModel extends AbstractTableModel {
+		
+		//Column Headings are only used for this class. Used for the Truth Table
 		String[] ColumnHeadings = { "Input A", "Input B", "Input C", "Input D", "Input E", "Input F", "Output G" };
+		
+		/**
+		 * returns the number of columns. Used to determine the size of
+		 * the truth table
+		 */
 		@Override
 		public int getColumnCount() {
 			return ColumnHeadings.length;
 		}
+		/**
+		 * returns the number of rows. Used to determine the size of
+		 * the truth table
+		 */
 		@Override
 		public int getRowCount() {
 			return initialGates.length;
 		}
+		
+		/**
+		 * returns the name of the columns at a specific index, based on the
+		 * ColumnHeadings array
+		 * 
+		 * @param	col	declares the index column number being requested
+		 * 
+		 */
 		@Override
 		public String getColumnName(int col) {
 			return ColumnHeadings[col];
 		}
+		
+		/**
+		 * When the user changes the value at a cell, this method returns the
+		 * changed value
+		 * 
+		 * @param	row	the row number for where the user changed the data
+		 * @param	col	the column number for where the user changed the data
+		 * 
+		 */
 		@Override
 		public Object getValueAt(int row, int col) {
 			return initialGates[row][col];
 		}
+		
+		/**
+		 * Changes every cell of every column into of type Boolean.
+		 * This in lead changes the cells into checkboxes. This avoids
+		 * user error of typing true/false incorrectly
+		 * 
+		 * @param	columnIndex	the column index number used for changing the class
+		 * 
+		 */
 		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return Boolean.class;
 		}
 		
+		/**
+		 * The user will not be able to change the initial truth table values.
+		 * This method will ensure that the user can only change the values
+		 * for the gate outputs. The first 4 columns will be not be editable
+		 * 
+		 * @param	row		the row number for editing permissions. Not used but required.
+		 * @param	col		the column number for editing permissions
+		 */
 		@Override
 		public boolean isCellEditable(int row, int col) {
 			if (col < 4) {
@@ -578,6 +669,14 @@ public class drawing extends JFrame implements ActionListener {
 				return true;
 			}
 		}
+		
+		/**
+		 * sets values of the truth table.
+		 * 
+		 * @param	value	value of the table
+		 * @param	row		the row number for the value to be set
+		 * @param	col		the column number for the value to be set
+		 */
 		@Override
 		public void setValueAt(Object value, int row, int col) {
             initialGates[row][col] = value;
