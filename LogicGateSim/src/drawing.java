@@ -250,7 +250,7 @@ public class drawing extends JFrame implements ActionListener {
 			new HelpSheet();
 		}
 		
-		/* When the user clicks confirm, the program will generate the 
+		/** When the user clicks confirm, the program will generate the 
 		 * appropriate number of logic gates based on the selection.
 		 * If nothing is selected, a message box appears asking the user to
 		 * select a logic gate.
@@ -277,7 +277,7 @@ public class drawing extends JFrame implements ActionListener {
 			}
 
 		}
-		/* When the user clicks check, the user answers are compared with the AI
+		/** When the user clicks check, the user answers are compared with the AI
 		 * answers and stored in an array. If the array contains a false, the user
 		 * has not completed the truth table successfully.
 		 */

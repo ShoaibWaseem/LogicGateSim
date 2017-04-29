@@ -3,17 +3,32 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 
 
-
+/**
+* Class Gates takes the randomly generated number between 1-5 to 
+* select a gate from drawing.java when the user clicks the confirm button
+* 
+* Using awt.Graphics, the methods take x and y coordinates to position their
+* lines to draw the logic gates.
+* 
+*
+*/
 @SuppressWarnings("serial")
 public class Gates extends JFrame {
-	//NOR.getGate(gfx, 100, 100);
-	
+	//takes the randomly selected gates ID, applied in getGate
 	int gateID;
+	
 	public Gates(int id)
 	{
 		gateID = id;
 	}
-	
+	/**
+	 * select the appropriate gate based on the gateID. 
+	 * 
+	 * @param	Gate		Graphics to draw - could be better named (future work)
+	 * @param	translatex	Move gate with the x axis based on final gate or not
+	 * @param	translatey	Move gate with the y axis for the 2nd gate
+	 * 
+	 */
 	public void getGate(Graphics Gate ,int translatex, int translatey) {
 		if(gateID == 1) {
 			paintXOR(Gate ,translatex, translatey);
@@ -32,7 +47,14 @@ public class Gates extends JFrame {
 		}
 	}
 	
-	
+	/**
+	 * Draws XOR on the Frame
+	 * 
+	 * @param	XOR		Graphics to draw - could be better named (future work)
+	 * @param	translatex	Move gate with the x axis based on final gate or not
+	 * @param	translatey	Move gate with the y axis for the 2nd gate
+	 * 
+	 */
 		public void paintXOR(Graphics XOR, int translatex, int translatey)
 		{
 		XOR.setColor(Color.black); //black line colour
@@ -46,7 +68,14 @@ public class Gates extends JFrame {
 		
 		
 		}
-		
+		/**
+		 * Draws NOR on the Frame
+		 * 
+		 * @param	NOR		Graphics to draw - could be better named (future work)
+		 * @param	translatex	Move gate with the x axis based on final gate or not
+		 * @param	translatey	Move gate with the y axis for the 2nd gate
+		 * 
+		 */
 		public void paintNOR(Graphics NOR, int translatex, int translatey)
 		{
 			NOR.setColor(Color.black); //black line colour
@@ -61,7 +90,14 @@ public class Gates extends JFrame {
 			
 
 		}
-		
+		/**
+		 * Draws NAND on the Frame
+		 * 
+		 * @param	NAND		Graphics to draw - could be better named (future work)
+		 * @param	translatex	Move gate with the x axis based on final gate or not
+		 * @param	translatey	Move gate with the y axis for the 2nd gate
+		 * 
+		 */
 		public void paintNAND(Graphics NAND, int translatex, int translatey)
 		{
 			NAND.setColor(Color.black); //black line colour
@@ -80,11 +116,17 @@ public class Gates extends JFrame {
 			
 
 		}
-		
+		/**
+		 * Draws AND on the Frame
+		 * 
+		 * @param	AND		Graphics to draw - could be better named (future work)
+		 * @param	translatex	Move gate with the x axis based on final gate or not
+		 * @param	translatey	Move gate with the y axis for the 2nd gate
+		 * 
+		 */
 		public void paintAND(Graphics AND, int translatex, int translatey)
 		{
 			AND.setColor(Color.black); //black line colour
-			
 			
 			AND.drawLine(100 + translatex, 100 + translatey, 100 + translatex, 150 + translatey); 			//vertical input line
 			AND.drawLine(100 + translatex, 100 + translatey, 125 + translatex, 100 + translatey); 			//upper pre-arc line
@@ -96,7 +138,14 @@ public class Gates extends JFrame {
 			
 		
 		}
-		
+		/**
+		 * Draws OR on the Frame
+		 * 
+		 * @param	OR		Graphics to draw - could be better named (future work)
+		 * @param	translatex	Move gate with the x axis based on final gate or not
+		 * @param	translatey	Move gate with the y axis for the 2nd gate
+		 * 
+		 */
 		public void paintOR(Graphics OR, int translatex, int translatey)
 		{
 			OR.setColor(Color.black); //black line colour
